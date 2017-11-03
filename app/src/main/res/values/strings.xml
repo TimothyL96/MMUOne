@@ -5,6 +5,8 @@
 	<string name="login">Log In</string>
 	<string name="register">Register</string>
 	<string name="passwordShowHide">Show or hide password</string>
+	<string name="logInToSignUpIcon">Sign up icon</string>
 	<string name="logInToSignUp">Don\'t have an account? Sign up here</string>
+	<string name="signUptoLogInIcon">Log in icon</string>
 	<string name="signUptoLogIn">Already have an account? Sign in here</string>
 </resources>

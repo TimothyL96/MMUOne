@@ -17,10 +17,11 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class RegisterActivity extends AppCompatActivity {
-
+public class RegisterActivity extends AppCompatActivity
+{
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 
@@ -28,34 +29,36 @@ public class RegisterActivity extends AppCompatActivity {
 		View.OnTouchListener registerTouchListener = new registerTouchListener();
 		View.OnFocusChangeListener noInputFocusListener = new noInputFocusChangeListener();
 
-		TextView logInText = (TextView) findViewById(R.id.logInText);
+		TextView logInText = findViewById(R.id.logInText);
+		ConstraintLayout cl = findViewById(R.id.constraintlayout);
+		Button register = findViewById(R.id.btn_register);
+		ImageView logInIcon = findViewById(R.id.logInIcon);
+
 		logInText.setOnClickListener(registerClickListener);
-		logInText.setOnTouchListener(registerTouchListener);
-
-		ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.constraintlayout);
-		cl.setOnFocusChangeListener(noInputFocusListener);
-
-		Button register = (Button) findViewById(R.id.btn_register);
-		register.setOnFocusChangeListener(noInputFocusListener);
 		register.setOnClickListener(registerClickListener);
-
-		ImageView logInIcon = (ImageView) findViewById(R.id.logInIcon);
 		logInIcon.setOnClickListener(registerClickListener);
+
+		logInText.setOnTouchListener(registerTouchListener);
 		logInIcon.setOnTouchListener(registerTouchListener);
+
+		cl.setOnFocusChangeListener(noInputFocusListener);
+		register.setOnFocusChangeListener(noInputFocusListener);
 	}
 
-	private class registerClickListener implements View.OnClickListener {
-
+	private class registerClickListener implements View.OnClickListener
+	{
 		public void onClick(View view)
 		{
-			if (view.getId() != R.id.btn_register)
+			TextView logInText = findViewById(R.id.logInText);
+
+			if (view.getId() == R.id.logInText || view.getId() == R.id.logInIcon)
 			{
-				TextView logInText = (TextView) findViewById(R.id.logInText);
 				logInText.setTypeface(null, Typeface.BOLD);
 				startActivity(new Intent(RegisterActivity.this, LogInActivity.class));
 				finish();
 			}
 
+			//	TODO
 			if (view.getId() == R.id.btn_register)
 			{
 
@@ -63,13 +66,14 @@ public class RegisterActivity extends AppCompatActivity {
 		}
 	}
 
-	private class registerTouchListener implements View.OnTouchListener {
-
+	private class registerTouchListener implements View.OnTouchListener
+	{
 		Rect rect;
-		public boolean onTouch(View view, MotionEvent event) {
-			TextView logInText = (TextView) findViewById(R.id.logInText);
+		TextView logInText = (TextView) findViewById(R.id.logInText);
 
-			if (view.getId() != R.id.btn_register)
+		public boolean onTouch(View view, MotionEvent event)
+		{
+			if (view.getId() == R.id.logInText || view.getId() == R.id.logInIcon)
 			{
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					logInText.setTypeface(null, Typeface.BOLD);
@@ -81,20 +85,15 @@ public class RegisterActivity extends AppCompatActivity {
 				}
 			}
 
-			if (view.getId() == R.id.btn_register)
-			{
-				//Register
-			}
-
 			return false;
 		}
 	}
 
-	private class noInputFocusChangeListener implements View.OnFocusChangeListener {
-
+	private class noInputFocusChangeListener implements View.OnFocusChangeListener
+	{
 		public void onFocusChange(View view, boolean b)
 		{
-			if (b && !(view instanceof TextInputLayout))
+			if (b && (view.getId() == R.id.btn_register || view.getId() == R.id.constraintlayout))
 			{
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

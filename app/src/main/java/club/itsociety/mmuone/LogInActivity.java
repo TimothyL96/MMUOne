@@ -18,12 +18,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class LogInActivity extends AppCompatActivity {
-
+public class LogInActivity extends AppCompatActivity
+{
+	//	@Override prevents or disables method overloading
+	//	If the parameters in new method is entered wrongly from the parent method
+	//	It will then become overloading instead of overriding, @Override check for this
+	//	An error will be shown if it is overloaded with @Override
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+
+		//Allow ScrollView to scroll
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
 		//View decorView = getWindow().getDecorView();
@@ -35,121 +42,310 @@ public class LogInActivity extends AppCompatActivity {
 		//ActionBar actionBar = getActionBar();
 		//actionBar.hide();
 
+		//Create events listener
 		View.OnFocusChangeListener noInputFocusListener = new noInputFocusChangeListener();
 		View.OnClickListener logInClickListener = new logInClickListener();
 		View.OnTouchListener logInTouchListener = new logInTouchListener();
 
-		ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.constraintlayout);
+		//Create widgets objects
+		ConstraintLayout cl = findViewById(R.id.constraintlayout);
+		Button logIn = findViewById(R.id.btn_login);
+		TextView signUpText = findViewById(R.id.signUpText);
+		ImageView signUpIcon = findViewById(R.id.signUpIcon);
+		EditText editTextStudentID = findViewById(R.id.input_studentID);
+		EditText editTextPassword = findViewById(R.id.input_password);
+
+		//Set the widget object to event listener
+		//OnFocusChangeListener
 		cl.setOnFocusChangeListener(noInputFocusListener);
-
-		Button logIn = (Button) findViewById(R.id.btn_login);
 		logIn.setOnFocusChangeListener(noInputFocusListener);
+		editTextStudentID.setOnFocusChangeListener(noInputFocusListener);
+		editTextPassword.setOnFocusChangeListener(noInputFocusListener);
+
+		//OnClickListener
 		logIn.setOnClickListener(logInClickListener);
-
-		TextView signUpText = (TextView) findViewById(R.id.signUpText);
 		signUpText.setOnClickListener(logInClickListener);
-		signUpText.setOnTouchListener(logInTouchListener);
-
-		ImageView signUpIcon = (ImageView) findViewById(R.id.signUpIcon);
-		signUpIcon.setOnTouchListener(logInTouchListener);
 		signUpIcon.setOnClickListener(logInClickListener);
 
-		//Background Animation
+		//OnTouchListener
+		signUpText.setOnTouchListener(logInTouchListener);
+		signUpIcon.setOnTouchListener(logInTouchListener);
+
+		//Gradient Background Animation
+		//Enter Fade Time: 500
+		//Exit Fade Time: 1200
 		AnimationDrawable animationDrawable = (AnimationDrawable) cl.getBackground();
 		animationDrawable.setEnterFadeDuration(500);
 		animationDrawable.setExitFadeDuration(1200);
 		animationDrawable.start();
-
-		EditText editText = (EditText) findViewById(R.id.input_password);
-		editText.setOnFocusChangeListener(noInputFocusListener);
 	}
 
-	private class noInputFocusChangeListener implements View.OnFocusChangeListener {
-
+	//	Class for OnFocusChangeListener events
+	private class noInputFocusChangeListener implements View.OnFocusChangeListener
+	{
+		//	Method that needs to be overridden
+		@Override
 		public void onFocusChange(View view, boolean b)
 		{
+			//	Widget objects
+			EditText editTextStudentID = findViewById(R.id.input_studentID);
+			EditText editTextPassword = findViewById(R.id.input_password);
+			TextInputLayout textInputLayoutPassword = findViewById(R.id.input_layout_password);
+			TextInputLayout textInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
+
+			//	If focused and it is the login button or the constraint layout
 			if (b && (view.getId() == R.id.btn_login || view.getId() == R.id.constraintlayout))
 			{
+				//This will hide the keyboard or soft input
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 			}
 
-			if (b && view.getId() == R.id.input_password)
+			//	Next two if else perform same thing over different views - studentID and password
+			//
+			//	If focused:
+			//	If textInputLayout error is present at the bottom of input
+			//	Remove the error for editText that will appear on the right side
+			//	Else show the error again but remove the error icon of editText
+			//	As the icon will overlap with the password visibility icon
+			//
+			//	If lost focus:
+			//	Check the strings if empty ask them to enter their student ID or password
+			//	If not empty but length not enough, ask them to check their student ID and password
+			//	Lastly remove the error from editText as there's error display from TextInputLayout
+
+			//	If the focused or unfocused widget is the studentID input field
+			if (view.getId() == R.id.input_studentID)
 			{
-				TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.input_layout_password);
-				textInputLayout.setPasswordVisibilityToggleEnabled(true);
+				if (b)
+				{
+					//	If focused
+					if (textInputLayoutStudentID.getError() != null)
+					{
+						editTextStudentID.setError(null);
+					}
+					else
+					{
+						editTextStudentID.setError(editTextStudentID.getError(), null);
+					}
+				}
+				else
+				{
+					//	If unfocused
+					if (editTextStudentID.getText().toString().trim().equals(""))
+					{
+						textInputLayoutStudentID.setError("Please enter your student ID");
+					}
+					else if (editTextStudentID.getText().toString().trim().length() < 10)
+					{
+						textInputLayoutStudentID.setError("Please check your student ID");
+					}
+					else
+					{
+						textInputLayoutStudentID.setError(null);
+					}
+					editTextStudentID.setError(null);
+				}
 			}
 
-			if (!b && view.getId() == R.id.input_password)
+			//	If the focused or unfocused widget is the password input field
+			if (view.getId() == R.id.input_password)
 			{
-				TextInputLayout textInputLayout = (TextInputLayout) findViewById(R.id.input_layout_password);
-				textInputLayout.setPasswordVisibilityToggleEnabled(false);
+				if (b)
+				{
+					//	If focused
+					textInputLayoutPassword.setPasswordVisibilityToggleEnabled(true);
+					if (textInputLayoutPassword.getError() != null)
+					{
+						editTextPassword.setError(null);
+					}
+					else
+					{
+						//If unfocused
+						editTextPassword.setError(editTextPassword.getError(), null);
+					}
+				}
+				else
+				{
+					if (editTextPassword.getText().toString().trim().equals(""))
+					{
+						textInputLayoutPassword.setError("Please enter your password");
+					}
+					else if (editTextPassword.getText().toString().trim().length() < 6)
+					{
+						textInputLayoutPassword.setError("Please check your password");
+					}
+					else
+					{
+						textInputLayoutPassword.setError(null);
+					}
+					editTextPassword.setError(null);
+
+					//	Remove the password visibility toggle if focus is not on password field
+					textInputLayoutPassword.setPasswordVisibilityToggleEnabled(false);
+				}
 			}
 		}
 	}
 
-	private class logInClickListener implements View.OnClickListener {
-
+	//	Class for OnClickListener events
+	private class logInClickListener implements View.OnClickListener
+	{
+		//	Method that needs to be overridden
+		@Override
 		public void onClick(View view)
 		{
-			if (view.getId() != R.id.btn_login)
+			//	Widget objects
+			EditText editTextStudentID = findViewById(R.id.input_studentID);
+			EditText editTextPassword = findViewById(R.id.input_password);
+			ConstraintLayout cl = findViewById(R.id.constraintlayout);
+			TextView signUpText = findViewById(R.id.signUpText);
+
+			//	If clicked widget is the sign up texts or sign up icon at the bottom of page
+			if (view.getId() == R.id.signUpText || view.getId() == R.id.signUpIcon)
 			{
-				TextView signUpText = (TextView) findViewById(R.id.signUpText);
+				//	Underline the text
 				//signUpText.setPaintFlags(signUpText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+				//	Bold the text
 				signUpText.setTypeface(null, Typeface.BOLD);
+
+				// Start the Log In Activity
 				startActivity(new Intent(LogInActivity.this, RegisterActivity.class));
+
+				//	End current activity so the screen will not come back when back button pressed
 				finish();
 			}
 
+			//	If clicked widget is the login button
+			//	We will login the user in here
 			if (view.getId() == R.id.btn_login)
 			{
+				//	Remove all focus when button clicked and instead focus the constraint layout
+				//	In case the input is still focused when user clicked this button
+				editTextStudentID.clearFocus();
+				editTextPassword.clearFocus();
+				cl.requestFocus();
 
+				//	Also hide the keyboard or soft input
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+				//	Check for studentID and password field when login button clicked
+				//	Set errors with error icon if they are empty and not focused
+				//	The errors will show up once they focus a particular input field
+				//	If focused, show the error but not the error icon
+				//	As password visibility icon might overlap with the error icon
+				//	Errors will also be shown if minimum length not met
+				//	Minimum and maximum length of each input field:
+				//	StudentID 	->		10 	-	15
+				//	Password	->		6 	- 	20
+				if (editTextStudentID.getText().toString().trim().equals(""))
+				{
+					if (editTextStudentID.isFocused())
+					{
+						//	null to remove the error icon
+						editTextStudentID.setError("Please enter your student ID", null);
+					}
+					else
+					{
+						editTextStudentID.setError("Please enter your student ID");
+					}
+				}
+				else if (editTextStudentID.getText().toString().trim().length() < 10)
+				{
+					if (editTextStudentID.isFocused())
+					{
+						editTextStudentID.setError("Please check your student ID", null);
+					}
+					else
+					{
+						editTextStudentID.setError("Please check your student ID");
+					}
+				}
+
+				if (editTextPassword.getText().toString().trim().equals(""))
+				{
+					if (editTextPassword.isFocused())
+					{
+						editTextPassword.setError("Please enter your password", null);
+					}
+					else
+					{
+						editTextPassword.setError("Please enter your password");
+					}
+
+				}
+				else if (editTextPassword.getText().toString().trim().length() < 6)
+				{
+					if (editTextPassword.isFocused())
+					{
+						editTextPassword.setError("Please check your password", null);
+					}
+					else
+					{
+						editTextPassword.setError("Please check your password");
+					}
+				}
 			}
 		}
 	}
 
-	private class logInTouchListener implements View.OnTouchListener {
-
+	//	Class for OnTouchListener events
+	private class logInTouchListener implements View.OnTouchListener
+	{
+		//	Rect or Rectangle records positions to detect the motion or position of cursor
+		//	whether it is still hovering or not from a widget
 		Rect rect;
+
+		//	Method that needs to be overridden
+		@Override
 		public boolean onTouch(View view, MotionEvent event)
 		{
-			TextView signUpText = (TextView) findViewById(R.id.signUpText);
+			//	Widget object
+			TextView signUpText = findViewById(R.id.signUpText);
 
-			if (view.getId() != R.id.btn_login)
+			//	If touched widget is sign up text or icon
+			if (view.getId() == R.id.signUpText || view.getId() == R.id.signUpIcon)
 			{
+				//	For touch event that is action down or "mouse down"
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					//	Set font weight to bold
 					signUpText.setTypeface(null, Typeface.BOLD);
+
+					//	Record the rectangle position
 					rect = new Rect(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
 				}
 
+				//	If the touch event is move and the rect or "cursor" is not hovering the widget
 				if (event.getAction() == MotionEvent.ACTION_MOVE && !rect.contains(view.getLeft() + (int) event.getX(), view.getTop() + (int) event.getY())) {
+					//	Set font weight to normal
 					signUpText.setTypeface(null, Typeface.NORMAL);
 				}
-			}
-
-			if (view.getId() == R.id.btn_login)
-			{
-				//Register
 			}
 
 			return false;
 		}
 	}
 
-/*	@Override
-	public boolean dispatchTouchEvent(MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			View v = getCurrentFocus();
-			if ( v instanceof EditText) {
-				Rect outRect = new Rect();
-				v.getGlobalVisibleRect(outRect);
-				if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
-					v.clearFocus();
-					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-				}
-			}
-		}
-		return super.dispatchTouchEvent( event );
-	}*/
+	//	Hide keyboard input and clear focus when press outside of input
+	//	AndroidManifest -> input AdjustResize
+	//	Keyboard reappears even with switching to another input -> Thus not used anymore
+	//
+	//	@Override
+	//	public boolean dispatchTouchEvent(MotionEvent event) {
+	//		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+	//			View v = getCurrentFocus();
+	//			if ( v instanceof EditText) {
+	//				Rect outRect = new Rect();
+	//				v.getGlobalVisibleRect(outRect);
+	//				if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+	//					v.clearFocus();
+	//					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	//					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+	//				}
+	//			}
+	//		}
+	//		return super.dispatchTouchEvent( event );
+	//	}
 }
