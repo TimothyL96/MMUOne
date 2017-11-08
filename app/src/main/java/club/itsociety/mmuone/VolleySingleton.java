@@ -39,7 +39,7 @@ public class VolleySingleton
 		//	implement the interface methods getBitmap() and putBitmap().
 		imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache()
 		{
-			private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);
+			private final LruCache<String, Bitmap> cache = new LruCache<>(20);
 
 			@Override
 			public Bitmap getBitmap(String url)
@@ -88,7 +88,7 @@ public class VolleySingleton
 		getRequestQueue().add(request);
 	}
 
-	public ImageLoader getImageLoader()
+	protected ImageLoader getImageLoader()
 	{
 		return imageLoader;
 	}
