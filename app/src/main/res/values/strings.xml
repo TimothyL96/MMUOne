@@ -9,4 +9,9 @@
 	<string name="logInToSignUp">Don\'t have an account? Sign up here</string>
 	<string name="signUptoLogInIcon">Log in icon</string>
 	<string name="signUptoLogIn">Already have an account? Sign in here</string>
+	<string name="personalEmail">Personal E-mail</string>
+	<string name="fullName">Full Name</string>
+	<string name="faculty">Faculty</string>
+	<string name="forgotPassword">Forgot Password?</string>
+	<string name="recoverPassword">Recover Password</string>
 </resources>

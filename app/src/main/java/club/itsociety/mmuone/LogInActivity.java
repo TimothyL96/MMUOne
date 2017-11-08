@@ -30,50 +30,55 @@ public class LogInActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		//Allow ScrollView to scroll
+		//	Allow ScrollView to scroll
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-		//View decorView = getWindow().getDecorView();
-		//Hide the status bar
-		//int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		//decorView.setSystemUiVisibility(uiOptions);
-		//Remember that you should never show the action bar
-		// if the status bar is hidden, so hide that too if necessary
-		//ActionBar actionBar = getActionBar();
-		//actionBar.hide();
+		/*
+			View decorView = getWindow().getDecorView();
+			Hide the status bar
+			int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+			decorView.setSystemUiVisibility(uiOptions);
+			Remember that you should never show the action bar
+			 if the status bar is hidden, so hide that too if necessary
+			ActionBar actionBar = getActionBar();
+			actionBar.hide();
+		*/
 
-		//Create events listener
+		//	Create events listener
 		View.OnFocusChangeListener noInputFocusListener = new noInputFocusChangeListener();
 		View.OnClickListener logInClickListener = new logInClickListener();
 		View.OnTouchListener logInTouchListener = new logInTouchListener();
 
-		//Create widgets objects
-		ConstraintLayout cl = findViewById(R.id.constraintlayout);
+		//	Create widgets objects
+		ConstraintLayout cl = findViewById(R.id.constraintLayout);
 		Button logIn = findViewById(R.id.btn_login);
 		TextView signUpText = findViewById(R.id.signUpText);
+		TextView forgotPasswordText = findViewById(R.id.forgotPassword);
 		ImageView signUpIcon = findViewById(R.id.signUpIcon);
 		EditText editTextStudentID = findViewById(R.id.input_studentID);
 		EditText editTextPassword = findViewById(R.id.input_password);
 
-		//Set the widget object to event listener
-		//OnFocusChangeListener
+		//	Set the widget object to event listener
+		//	OnFocusChangeListener
 		cl.setOnFocusChangeListener(noInputFocusListener);
 		logIn.setOnFocusChangeListener(noInputFocusListener);
 		editTextStudentID.setOnFocusChangeListener(noInputFocusListener);
 		editTextPassword.setOnFocusChangeListener(noInputFocusListener);
 
-		//OnClickListener
+		//	OnClickListener
 		logIn.setOnClickListener(logInClickListener);
 		signUpText.setOnClickListener(logInClickListener);
 		signUpIcon.setOnClickListener(logInClickListener);
+		forgotPasswordText.setOnClickListener(logInClickListener);
 
-		//OnTouchListener
+		//	OnTouchListener
 		signUpText.setOnTouchListener(logInTouchListener);
 		signUpIcon.setOnTouchListener(logInTouchListener);
+		forgotPasswordText.setOnTouchListener(logInTouchListener);
 
-		//Gradient Background Animation
-		//Enter Fade Time: 500
-		//Exit Fade Time: 1200
+		//	Gradient Background Animation
+		//	Enter Fade Time: 500
+		//	Exit Fade Time: 1200
 		AnimationDrawable animationDrawable = (AnimationDrawable) cl.getBackground();
 		animationDrawable.setEnterFadeDuration(500);
 		animationDrawable.setExitFadeDuration(1200);
@@ -94,7 +99,7 @@ public class LogInActivity extends AppCompatActivity
 			TextInputLayout textInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
 
 			//	If focused and it is the login button or the constraint layout
-			if (b && (view.getId() == R.id.btn_login || view.getId() == R.id.constraintlayout))
+			if (b && view.getId() == R.id.constraintLayout)
 			{
 				//This will hide the keyboard or soft input
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -132,11 +137,7 @@ public class LogInActivity extends AppCompatActivity
 				else
 				{
 					//	If unfocused
-					if (editTextStudentID.getText().toString().trim().equals(""))
-					{
-						textInputLayoutStudentID.setError("Please enter your student ID");
-					}
-					else if (editTextStudentID.getText().toString().trim().length() < 10)
+					if (editTextStudentID.getText().toString().trim().length() < 10 && !editTextStudentID.getText().toString().isEmpty())
 					{
 						textInputLayoutStudentID.setError("Please check your student ID");
 					}
@@ -154,7 +155,6 @@ public class LogInActivity extends AppCompatActivity
 				if (b)
 				{
 					//	If focused
-					textInputLayoutPassword.setPasswordVisibilityToggleEnabled(true);
 					if (textInputLayoutPassword.getError() != null)
 					{
 						editTextPassword.setError(null);
@@ -164,14 +164,13 @@ public class LogInActivity extends AppCompatActivity
 						//If unfocused
 						editTextPassword.setError(editTextPassword.getError(), null);
 					}
+
+					// Enable the password visibility toggle if the input is focused
+					textInputLayoutPassword.setPasswordVisibilityToggleEnabled(true);
 				}
 				else
 				{
-					if (editTextPassword.getText().toString().trim().equals(""))
-					{
-						textInputLayoutPassword.setError("Please enter your password");
-					}
-					else if (editTextPassword.getText().toString().trim().length() < 6)
+					if (editTextPassword.getText().toString().trim().length() < 6 && !editTextPassword.getText().toString().isEmpty())
 					{
 						textInputLayoutPassword.setError("Please check your password");
 					}
@@ -196,10 +195,11 @@ public class LogInActivity extends AppCompatActivity
 		public void onClick(View view)
 		{
 			//	Widget objects
+			TextInputLayout textInputLayoutPassword = findViewById(R.id.input_layout_password);
+			TextInputLayout textInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
 			EditText editTextStudentID = findViewById(R.id.input_studentID);
 			EditText editTextPassword = findViewById(R.id.input_password);
-			ConstraintLayout cl = findViewById(R.id.constraintlayout);
-			TextView signUpText = findViewById(R.id.signUpText);
+			ConstraintLayout cl = findViewById(R.id.constraintLayout);
 
 			//	If clicked widget is the sign up texts or sign up icon at the bottom of page
 			if (view.getId() == R.id.signUpText || view.getId() == R.id.signUpIcon)
@@ -207,14 +207,31 @@ public class LogInActivity extends AppCompatActivity
 				//	Underline the text
 				//signUpText.setPaintFlags(signUpText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-				//	Bold the text
-				signUpText.setTypeface(null, Typeface.BOLD);
-
-				// Start the Log In Activity
+				//	Start the Log In Activity
 				startActivity(new Intent(LogInActivity.this, RegisterActivity.class));
 
 				//	End current activity so the screen will not come back when back button pressed
 				finish();
+			}
+
+			//	If clicked widget is forgot password text
+			if (view.getId() == R.id.forgotPassword)
+			{
+				//	Start the Forgot Password Activity
+				startActivity(new Intent(LogInActivity.this, ForgotPassword.class));
+
+				//	Clear password field
+				editTextPassword.setText("");
+
+				//	Clear errors except error for studentID in TextInputLayout
+				if (editTextPassword.getError() != null)
+					editTextPassword.setError(null);
+
+				if (editTextStudentID.getError() != null)
+					editTextStudentID.setError(null);
+
+				if (textInputLayoutPassword.getError() != null)
+					textInputLayoutPassword.setError(null);
 			}
 
 			//	If clicked widget is the login button
@@ -222,14 +239,7 @@ public class LogInActivity extends AppCompatActivity
 			if (view.getId() == R.id.btn_login)
 			{
 				//	Remove all focus when button clicked and instead focus the constraint layout
-				//	In case the input is still focused when user clicked this button
-				editTextStudentID.clearFocus();
-				editTextPassword.clearFocus();
 				cl.requestFocus();
-
-				//	Also hide the keyboard or soft input
-				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
 				//	Check for studentID and password field when login button clicked
 				//	Set errors with error icon if they are empty and not focused
@@ -239,7 +249,7 @@ public class LogInActivity extends AppCompatActivity
 				//	Errors will also be shown if minimum length not met
 				//	Minimum and maximum length of each input field:
 				//	StudentID 	->		10 	-	15
-				//	Password	->		6 	- 	20
+				//	Password	->		6 	- 	25
 				if (editTextStudentID.getText().toString().trim().equals(""))
 				{
 					if (editTextStudentID.isFocused())
@@ -287,6 +297,12 @@ public class LogInActivity extends AppCompatActivity
 						editTextPassword.setError("Please check your password");
 					}
 				}
+
+				//	If all data verified, log the user in
+				if (editTextStudentID.getError() == null && editTextPassword.getError() == null && textInputLayoutStudentID.getError() == null & textInputLayoutPassword.getError() == null)
+				{
+					//	TODO when input data verified
+				}
 			}
 		}
 	}
@@ -304,12 +320,14 @@ public class LogInActivity extends AppCompatActivity
 		{
 			//	Widget object
 			TextView signUpText = findViewById(R.id.signUpText);
+			TextView forgotPasswordText = findViewById(R.id.forgotPassword);
 
 			//	If touched widget is sign up text or icon
 			if (view.getId() == R.id.signUpText || view.getId() == R.id.signUpIcon)
 			{
 				//	For touch event that is action down or "mouse down"
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+				{
 					//	Set font weight to bold
 					signUpText.setTypeface(null, Typeface.BOLD);
 
@@ -318,9 +336,38 @@ public class LogInActivity extends AppCompatActivity
 				}
 
 				//	If the touch event is move and the rect or "cursor" is not hovering the widget
-				if (event.getAction() == MotionEvent.ACTION_MOVE && !rect.contains(view.getLeft() + (int) event.getX(), view.getTop() + (int) event.getY())) {
+				if (event.getAction() == MotionEvent.ACTION_MOVE && !rect.contains(view.getLeft() + (int) event.getX(), view.getTop() + (int) event.getY()))
+				{
 					//	Set font weight to normal
 					signUpText.setTypeface(null, Typeface.NORMAL);
+				}
+			}
+
+			//	If touched widget is forgot password text
+			if (view.getId() == R.id.forgotPassword)
+			{
+				//	For touch event that is action down or "mouse down"
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+				{
+					//	Set font weight to bold
+					forgotPasswordText.setTypeface(null, Typeface.BOLD);
+
+					//	Record the rectangle position
+					rect = new Rect(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
+				}
+
+				//	If the touch event is move and the rect or "cursor" is not hovering the widget
+				if (event.getAction() == MotionEvent.ACTION_MOVE && !rect.contains(view.getLeft() + (int) event.getX(), view.getTop() + (int) event.getY()))
+				{
+					//	Set font weight to normal
+					forgotPasswordText.setTypeface(null, Typeface.NORMAL);
+				}
+
+				//	For touch event that is action up, we want to return font weight to normal
+				if (event.getAction() == MotionEvent.ACTION_UP)
+				{
+					//	Set font weight to normal
+					forgotPasswordText.setTypeface(null, Typeface.NORMAL);
 				}
 			}
 
