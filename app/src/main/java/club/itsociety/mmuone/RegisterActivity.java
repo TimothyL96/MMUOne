@@ -7,6 +7,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -102,10 +104,10 @@ public class RegisterActivity extends AppCompatActivity
 		public void onClick(View view)
 		{
 			TextView logInText = findViewById(R.id.logInText);
-			TextInputLayout textInputLayoutFullName = findViewById(R.id.input_layout_fullName);
-			TextInputLayout textInputLayoutEmail = findViewById(R.id.input_layout_email);
-			TextInputLayout textInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
-			TextInputLayout textInputLayoutPassword = findViewById(R.id.input_layout_password);
+			MyTextInputLayout MyTextInputLayoutFullName = findViewById(R.id.input_layout_fullName);
+			MyTextInputLayout MyTextInputLayoutEmail = findViewById(R.id.input_layout_email);
+			MyTextInputLayout MyTextInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
+			MyTextInputLayout MyTextInputLayoutPassword = findViewById(R.id.input_layout_password);
 			EditText editTextFullName = findViewById(R.id.input_fullName);
 			EditText editTextEmail = findViewById(R.id.input_email);
 			EditText editTextStudentID = findViewById(R.id.input_studentID);
@@ -132,48 +134,48 @@ public class RegisterActivity extends AppCompatActivity
 
 				//	Check for input data validation
 				//	Full name minimum length - 3
-				//	E-mail minimum length - 3
+				//	E-mail minimum length - 8
 				if (editTextFullName.getText().toString().isEmpty())
 				{
-					textInputLayoutFullName.setError("Please enter your full name");
+					MyTextInputLayoutFullName.setError("Please enter your full name");
 				}
 				else if (editTextFullName.getText().toString().trim().length() < 3)
 				{
-					textInputLayoutFullName.setError("Please check your name");
+					MyTextInputLayoutFullName.setError("Please check your name");
 				}
 
 				if (editTextEmail.getText().toString().isEmpty())
 				{
-					textInputLayoutEmail.setError("Please enter your email");
+					MyTextInputLayoutEmail.setError("Please enter your email");
 				}
-				else if (editTextEmail.getText().toString().trim().length() < 10)
+				else if (editTextEmail.getText().toString().trim().length() < 8)
 				{
-					textInputLayoutEmail.setError("Please check your email");
+					MyTextInputLayoutEmail.setError("Please check your email");
 				}
 				else
 				{
 					if (!validateEmail(editTextEmail.getText().toString().trim()))
 					{
-						textInputLayoutEmail.setError("Please check your email");
+						MyTextInputLayoutEmail.setError("Please check your email");
 					}
 				}
-
+				
 				if (editTextStudentID.getText().toString().isEmpty())
 				{
-					textInputLayoutStudentID.setError("Please enter your student ID");
+					MyTextInputLayoutStudentID.setError("Please enter your student ID");
 				}
 				else if (editTextStudentID.getText().toString().trim().length() < 10)
 				{
-					textInputLayoutStudentID.setError("Please check your student ID");
+					MyTextInputLayoutStudentID.setError("Please check your student ID");
 				}
 
 				if (editTextPassword.getText().toString().isEmpty())
 				{
-					textInputLayoutPassword.setError("Please enter a password");
+					MyTextInputLayoutPassword.setError("Please enter a password");
 				}
 				else if (editTextPassword.getText().toString().trim().length() < 6)
 				{
-					textInputLayoutPassword.setError("Password length must at least 6 characters long!");
+					MyTextInputLayoutPassword.setError("Password length must at least 6 characters long!");
 				}
 
 				//	If all input data verified, register the user
@@ -184,9 +186,7 @@ public class RegisterActivity extends AppCompatActivity
 					//progressBar = new ProgressBar(RegisterActivity.this);
 					progressBar = findViewById(R.id.progressBar);
 					progressBar.setVisibility(View.VISIBLE);
-					//progressBar.setProgress(0);
-					//progressBar.setMax(100);
-					//progressBar.animate();
+					progressBar.animate();
 
 					// New object for VolleyActivity class
 					VolleyActivity volleyActivity = new VolleyActivity();
@@ -247,10 +247,10 @@ public class RegisterActivity extends AppCompatActivity
 		@Override
 		public void onFocusChange(View view, boolean b)
 		{
-			TextInputLayout textInputLayoutFullName = findViewById(R.id.input_layout_fullName);
-			TextInputLayout textInputLayoutEmail = findViewById(R.id.input_layout_email);
-			TextInputLayout textInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
-			TextInputLayout textInputLayoutPassword = findViewById(R.id.input_layout_password);
+			MyTextInputLayout MyTextInputLayoutFullName = findViewById(R.id.input_layout_fullName);
+			MyTextInputLayout MyTextInputLayoutEmail = findViewById(R.id.input_layout_email);
+			MyTextInputLayout MyTextInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
+			MyTextInputLayout MyTextInputLayoutPassword = findViewById(R.id.input_layout_password);
 			EditText editTextEmail = findViewById(R.id.input_email);
 			EditText editTextStudentID = findViewById(R.id.input_studentID);
 			EditText editTextPassword = findViewById(R.id.input_password);
@@ -272,12 +272,12 @@ public class RegisterActivity extends AppCompatActivity
 				if (b)
 				{
 					// Enable the password visibility toggle if the input is focused
-					textInputLayoutPassword.setPasswordVisibilityToggleEnabled(true);
+					MyTextInputLayoutPassword.setPasswordVisibilityToggleEnabled(true);
 				}
 				else
 				{
 					//	Remove the password visibility toggle if focus is not on password field
-					textInputLayoutPassword.setPasswordVisibilityToggleEnabled(false);
+					MyTextInputLayoutPassword.setPasswordVisibilityToggleEnabled(false);
 				}
 			}
 
@@ -286,37 +286,37 @@ public class RegisterActivity extends AppCompatActivity
 				switch (view.getId())
 				{
 					case R.id.input_fullName:
-						textInputLayoutFullName.setError(null);
+						MyTextInputLayoutFullName.setError(null);
 						break;
 					case R.id.input_email:
 						CharSequence inputStr = editTextEmail.getText().toString().trim();
-						if (!validateEmail(inputStr) || (inputStr.length() > 0 && inputStr.length() < 10))
+						if (!validateEmail(inputStr) && (inputStr.length() > 0 && inputStr.length() < 8))
 						{
-							textInputLayoutEmail.setError("Please check your email");
+							MyTextInputLayoutEmail.setError("Please check your email");
 						}
 						else
 						{
-							textInputLayoutEmail.setError(null);
+							MyTextInputLayoutEmail.setError(null);
 						}
 						break;
 					case R.id.input_studentID:
 						if (editTextStudentID.getText().length() < 10 && editTextStudentID.getText().length() > 0)
 						{
-							textInputLayoutStudentID.setError("Please check your student ID");
+							MyTextInputLayoutStudentID.setError("Please check your student ID");
 						}
 						else
 						{
-							textInputLayoutStudentID.setError(null);
+							MyTextInputLayoutStudentID.setError(null);
 						}
 						break;
 					case R.id.input_password:
 						if (editTextPassword.getText().length() < 6 && editTextPassword.getText().length() > 0)
 						{
-							textInputLayoutPassword.setError("Password length must at least 6 characters long!");
+							MyTextInputLayoutPassword.setError("Password length must at least 6 characters long!");
 						}
 						else
 						{
-							textInputLayoutPassword.setError(null);
+							MyTextInputLayoutPassword.setError(null);
 						}
 						break;
 					default:
@@ -354,14 +354,8 @@ public class RegisterActivity extends AppCompatActivity
 						{
 
 						}
-					}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialogInterface, int i)
-						{
-
-						}
 					});
+					progressBar.setVisibility(View.GONE);
 					alertDialogBuilder.show();
 				}
 				catch (JSONException e)
@@ -381,6 +375,35 @@ public class RegisterActivity extends AppCompatActivity
 		public void afterTextChanged(Editable editable)
 		{
 
+		}
+	}
+
+	private class MyMyTextInputLayout extends MyTextInputLayout
+	{
+		public MyMyTextInputLayout(Context context) {
+			super(context);
+		}
+
+		public MyMyTextInputLayout(Context context, AttributeSet attrs) {
+			super(context, attrs);
+		}
+
+		public MyMyTextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+			super(context, attrs, defStyleAttr);
+		}
+
+		@Override
+		public void setError(@Nullable CharSequence error) {
+			super.setError(error);
+
+			View layout = getChildAt(1);
+			if (layout != null) {
+				if (error != null && !"".equals(error.toString().trim())) {
+					layout.setVisibility(VISIBLE);
+				} else {
+					layout.setVisibility(GONE);
+				}
+			}
 		}
 	}
 

@@ -30,10 +30,13 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:visibility="gone"
+			android:indeterminate="true"
+			android:indeterminateBehavior="cycle"
+			android:indeterminateOnly="true"
 			style="?android:attr/progressBarStyleHorizontal"
 			android:layout_marginTop="0dp"/>
 
-		<android.support.design.widget.TextInputLayout
+		<club.itsociety.mmuone.MyTextInputLayout
 			android:id="@+id/input_layout_fullName"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
@@ -55,9 +58,9 @@
 				android:maxLines="1"
 				android:inputType="textPersonName"
 				android:maxLength="50"/>
-		</android.support.design.widget.TextInputLayout>
+		</club.itsociety.mmuone.MyTextInputLayout>
 
-		<android.support.design.widget.TextInputLayout
+		<club.itsociety.mmuone.MyTextInputLayout
 			android:id="@+id/input_layout_email"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
@@ -79,9 +82,9 @@
 				android:maxLines="1"
 				android:inputType="textEmailAddress"
 				android:maxLength="50"/>
-		</android.support.design.widget.TextInputLayout>
+		</club.itsociety.mmuone.MyTextInputLayout>
 
-		<android.support.design.widget.TextInputLayout
+		<club.itsociety.mmuone.MyTextInputLayout
 			android:id="@+id/input_layout_studentID"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
@@ -103,9 +106,9 @@
 				android:maxLines="1"
 				android:inputType="numberSigned"
 				android:maxLength="15"/>
-		</android.support.design.widget.TextInputLayout>
+		</club.itsociety.mmuone.MyTextInputLayout>
 
-		<android.support.design.widget.TextInputLayout
+		<club.itsociety.mmuone.MyTextInputLayout
 			android:id="@+id/input_layout_password"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
@@ -131,7 +134,7 @@
 				android:hint="@string/password"
 				android:inputType="textPassword"
 				android:maxLength="25"/>
-		</android.support.design.widget.TextInputLayout>
+		</club.itsociety.mmuone.MyTextInputLayout>
 
 		<Button
 			android:id="@+id/btn_register"
