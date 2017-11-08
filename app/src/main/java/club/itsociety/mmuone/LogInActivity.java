@@ -103,7 +103,10 @@ public class LogInActivity extends AppCompatActivity
 			{
 				//This will hide the keyboard or soft input
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+				if (imm != null)
+				{
+					imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+				}
 			}
 
 			//	Next two if else perform same thing over different views - studentID and password
@@ -341,6 +344,12 @@ public class LogInActivity extends AppCompatActivity
 					//	Set font weight to normal
 					signUpText.setTypeface(null, Typeface.NORMAL);
 				}
+
+				//	For event that is action up and is inside the widget, we want to perform click
+				if (event.getAction() == MotionEvent.ACTION_UP && rect.contains(view.getLeft() + (int) event.getX(), view.getTop() + (int) event.getY()))
+				{
+					view.performClick();
+				}
 			}
 
 			//	If touched widget is forgot password text
@@ -363,36 +372,14 @@ public class LogInActivity extends AppCompatActivity
 					forgotPasswordText.setTypeface(null, Typeface.NORMAL);
 				}
 
-				//	For touch event that is action up, we want to return font weight to normal
-				if (event.getAction() == MotionEvent.ACTION_UP)
+				//	For event that is action up and is inside the widget, we want to perform click
+				if (event.getAction() == MotionEvent.ACTION_UP && rect.contains(view.getLeft() + (int) event.getX(), view.getTop() + (int) event.getY()))
 				{
-					//	Set font weight to normal
-					forgotPasswordText.setTypeface(null, Typeface.NORMAL);
+						view.performClick();
 				}
 			}
 
 			return false;
 		}
 	}
-
-	//	Hide keyboard input and clear focus when press outside of input
-	//	AndroidManifest -> input AdjustResize
-	//	Keyboard reappears even with switching to another input -> Thus not used anymore
-	//
-	//	@Override
-	//	public boolean dispatchTouchEvent(MotionEvent event) {
-	//		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-	//			View v = getCurrentFocus();
-	//			if ( v instanceof EditText) {
-	//				Rect outRect = new Rect();
-	//				v.getGlobalVisibleRect(outRect);
-	//				if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
-	//					v.clearFocus();
-	//					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-	//					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-	//				}
-	//			}
-	//		}
-	//		return super.dispatchTouchEvent( event );
-	//	}
 }
