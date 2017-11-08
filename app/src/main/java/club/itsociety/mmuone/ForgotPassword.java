@@ -107,7 +107,10 @@ public class ForgotPassword extends AppCompatActivity
 			{
 				//This will hide the keyboard or soft input
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+				if (imm != null)
+				{
+					imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+				}
 			}
 
 			//	If focused or lost focused widget is fullName

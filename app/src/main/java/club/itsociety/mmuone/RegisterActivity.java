@@ -1,22 +1,18 @@
 package club.itsociety.mmuone;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.LinearGradient;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -36,8 +32,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static android.view.Gravity.CENTER;
-import static android.view.Gravity.CENTER_HORIZONTAL;
-import static android.view.Gravity.CENTER_VERTICAL;
 
 public class RegisterActivity extends AppCompatActivity
 {
@@ -45,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity
 	JSONObject reply;
 	ProgressBar progressBar;
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -235,6 +230,13 @@ public class RegisterActivity extends AppCompatActivity
 					//	Set font weight to normal
 					logInText.setTypeface(null, Typeface.NORMAL);
 				}
+
+				//	If the touch event is up and inside widget region, perform a click
+				if (event.getAction() == MotionEvent.ACTION_UP && rect.contains(view.getLeft() + (int) event.getX(), view.getTop() + (int) event.getY()))
+				{
+					//	Perform a click
+					logInText.performClick();
+				}
 			}
 
 			return false;
@@ -375,35 +377,6 @@ public class RegisterActivity extends AppCompatActivity
 		public void afterTextChanged(Editable editable)
 		{
 
-		}
-	}
-
-	private class MyMyTextInputLayout extends MyTextInputLayout
-	{
-		public MyMyTextInputLayout(Context context) {
-			super(context);
-		}
-
-		public MyMyTextInputLayout(Context context, AttributeSet attrs) {
-			super(context, attrs);
-		}
-
-		public MyMyTextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-			super(context, attrs, defStyleAttr);
-		}
-
-		@Override
-		public void setError(@Nullable CharSequence error) {
-			super.setError(error);
-
-			View layout = getChildAt(1);
-			if (layout != null) {
-				if (error != null && !"".equals(error.toString().trim())) {
-					layout.setVisibility(VISIBLE);
-				} else {
-					layout.setVisibility(GONE);
-				}
-			}
 		}
 	}
 
