@@ -1,30 +1,48 @@
 package club.itsociety.mmuone;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.LinearGradient;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.view.Gravity.CENTER;
+import static android.view.Gravity.CENTER_HORIZONTAL;
+import static android.view.Gravity.CENTER_VERTICAL;
+
 public class RegisterActivity extends AppCompatActivity
 {
-	VolleyActivity volleyActivity = new VolleyActivity();
+	String registerURL = "https://mmuone.com/api/users/create.php";
+	JSONObject reply;
+	ProgressBar progressBar;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -35,9 +53,11 @@ public class RegisterActivity extends AppCompatActivity
 		View.OnClickListener registerClickListener = new registerClickListener();
 		View.OnTouchListener registerTouchListener = new registerTouchListener();
 		View.OnFocusChangeListener noInputFocusListener = new noInputFocusChangeListener();
+		TextWatcher textWatcher = new onTextWatchChanged();
 
 		//	Create widgets objects
 		TextView logInText = findViewById(R.id.logInText);
+		TextView textViewVolley = findViewById(R.id.textViewVolley);
 		ConstraintLayout cl = findViewById(R.id.constraintLayout);
 		Button register = findViewById(R.id.btn_register);
 		ImageView logInIcon = findViewById(R.id.logInIcon);
@@ -63,6 +83,8 @@ public class RegisterActivity extends AppCompatActivity
 		editTextEmail.setOnFocusChangeListener(noInputFocusListener);
 		editTextStudentID.setOnFocusChangeListener(noInputFocusListener);
 		editTextPassword.setOnFocusChangeListener(noInputFocusListener);
+
+		textViewVolley.addTextChangedListener(textWatcher);
 
 		//	Gradient Background Animation
 		//	Enter Fade Time: 500
@@ -157,14 +179,26 @@ public class RegisterActivity extends AppCompatActivity
 				//	If all input data verified, register the user
 				if (editTextFullName.getText().toString().trim().length() >= 3 && editTextEmail.getText().toString().trim().length() >= 10 && editTextStudentID.getText().toString().trim().length() >= 10 && editTextPassword.getText().toString().trim().length() >= 6 && validateEmail(editTextEmail.getText().toString().trim()))
 				{
-					//	TODO register the user
+					//	Register the user
+					//	Display progress bar
+					//progressBar = new ProgressBar(RegisterActivity.this);
+					progressBar = findViewById(R.id.progressBar);
+					progressBar.setVisibility(View.VISIBLE);
+					//progressBar.setProgress(0);
+					//progressBar.setMax(100);
+					//progressBar.animate();
+
+					// New object for VolleyActivity class
+					VolleyActivity volleyActivity = new VolleyActivity();
+
 					Map<String, String> params = new HashMap<>();
 					params.put("full_name", editTextFullName.getText().toString().trim());
 					params.put("email", editTextEmail.getText().toString().trim());
 					params.put("student_id", editTextStudentID.getText().toString().trim());
 					params.put("password_mmuone", editTextPassword.getText().toString().trim());
+
 					volleyActivity.setParams(params);
-					volleyActivity.volleyJsonObjectRequest("https://mmuone.com/api/users/create.php", view.getContext());
+					volleyActivity.volleyJsonObjectRequest(RegisterActivity.this.registerURL, view.getContext());
 				}
 			}
 		}
@@ -289,6 +323,64 @@ public class RegisterActivity extends AppCompatActivity
 						//	nothing =)
 				}
 			}
+		}
+	}
+
+	private class onTextWatchChanged implements TextWatcher
+	{
+		@Override
+		public void onTextChanged(CharSequence charSequence, int start, int before, int count)
+		{
+			if (!charSequence.toString().isEmpty())
+			{
+				try
+				{
+					RegisterActivity.this.reply = new JSONObject(charSequence.toString());
+					final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RegisterActivity.this);
+					alertDialogBuilder.setTitle("JSON REPLY");
+					LinearLayout linearLayout = new LinearLayout(RegisterActivity.this);
+					TextView textView = new TextView(RegisterActivity.this);
+					textView.setText(reply.getString("status"));
+					linearLayout.addView(textView);
+					TextView textView1 = new TextView(RegisterActivity.this);
+					textView1.setText(reply.getString("message"));
+					linearLayout.addView(textView1);
+					alertDialogBuilder.setView(linearLayout);
+					textView.setGravity(CENTER);
+					alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i)
+						{
+
+						}
+					}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i)
+						{
+
+						}
+					});
+					alertDialogBuilder.show();
+				}
+				catch (JSONException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence charSequence, int start, int count, int after)
+		{
+
+		}
+
+		@Override
+		public void afterTextChanged(Editable editable)
+		{
+
 		}
 	}
 

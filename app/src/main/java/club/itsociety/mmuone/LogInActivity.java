@@ -18,8 +18,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LogInActivity extends AppCompatActivity
 {
+	String loginURL = "https://mmuone.com/api/users/loginUser.php";
+
 	//	@Override prevents or disables method overloading
 	//	If the parameters in new method is entered wrongly from the parent method
 	//	It will then become overloading instead of overriding, @Override check for this
@@ -305,6 +310,14 @@ public class LogInActivity extends AppCompatActivity
 				if (editTextStudentID.getError() == null && editTextPassword.getError() == null && textInputLayoutStudentID.getError() == null & textInputLayoutPassword.getError() == null)
 				{
 					//	TODO when input data verified
+					VolleyActivity volleyActivity = new VolleyActivity();
+
+					Map<String, String> params = new HashMap<>();
+					params.put("student_id", editTextStudentID.getText().toString().trim());
+					params.put("password_mmuone", editTextPassword.getText().toString().trim());
+
+					volleyActivity.setParams(params);
+					volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext());
 				}
 			}
 		}

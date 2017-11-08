@@ -25,6 +25,14 @@
 		android:focusableInTouchMode="true"
 		android:clickable="true">
 
+		<ProgressBar
+			android:id="@+id/progressBar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:visibility="gone"
+			style="?android:attr/progressBarStyleHorizontal"
+			android:layout_marginTop="0dp"/>
+
 		<android.support.design.widget.TextInputLayout
 			android:id="@+id/input_layout_fullName"
 			android:layout_width="0dp"
@@ -172,28 +180,10 @@
 			app:layout_constraintTop_toBottomOf="@+id/btn_register"/>
 
 		<TextView
-			android:id="@+id/textView"
+			android:id="@+id/textViewVolley"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="TextView"
-			android:layout_marginRight="8dp"
-			app:layout_constraintRight_toRightOf="parent"
-			android:layout_marginLeft="8dp"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			android:layout_marginTop="8dp"/>
-
-		<ImageView
-			android:id="@+id/imageView"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="ImageView"
-			android:layout_marginRight="8dp"
-			app:layout_constraintRight_toRightOf="parent"
-			android:layout_marginLeft="8dp"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			android:layout_marginTop="8dp"/>
+			android:visibility="gone"/>
 
 	</android.support.constraint.ConstraintLayout>
 
