@@ -1,193 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/scrollview"
+	android:id="@+id/relativeLayout"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
 	android:fillViewport="true"
 	tools:context="club.itsociety.mmuone.LogInActivity">
 
-	<android.support.constraint.ConstraintLayout
-		android:id="@+id/constraintLayout"
+	<ScrollView
+		android:id="@+id/scrollview"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="@drawable/gradient_list_invert"
+		android:layout_height="match_parent"
 		android:orientation="vertical"
-		android:paddingLeft="20dp"
-		android:paddingRight="20dp"
-		android:paddingTop="20dp"
-		android:paddingBottom="20dp"
-		android:layout_margin="0dp"
-		android:focusable="true"
-		android:focusableInTouchMode="true"
-		android:clickable="true">
+		android:fillViewport="true">
 
-		<ProgressBar
-			android:id="@+id/progressBar"
+		<android.support.constraint.ConstraintLayout
+			android:id="@+id/constraintLayout"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:visibility="gone"
-			android:indeterminate="true"
-			android:indeterminateBehavior="cycle"
-			android:indeterminateOnly="true"
-			style="?android:attr/progressBarStyleHorizontal"
-			android:layout_marginTop="0dp"/>
+			android:background="@drawable/gradient_list_invert"
+			android:orientation="vertical"
+			android:paddingLeft="20dp"
+			android:paddingRight="20dp"
+			android:paddingTop="20dp"
+			android:paddingBottom="20dp"
+			android:layout_margin="0dp"
+			android:focusable="true"
+			android:focusableInTouchMode="true"
+			android:clickable="true">
 
-		<club.itsociety.mmuone.MyTextInputLayout
-			android:id="@+id/input_layout_fullName"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			app:layout_constraintTop_toTopOf="parent"
-			android:layout_marginTop="110dp"
-			app:layout_constraintRight_toRightOf="parent"
-			app:layout_constraintLeft_toLeftOf="parent"
-			android:layout_marginStart="16dp"
-			android:layout_marginEnd="16dp"
-			android:textColorHint="@color/textColor">
-
-			<android.support.design.widget.TextInputEditText
-				android:id="@+id/input_fullName"
-				android:layout_width="match_parent"
+			<club.itsociety.mmuone.MyTextInputLayout
+				android:id="@+id/input_layout_fullName"
+				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:drawableStart="@mipmap/icons8_user_100"
-				android:drawablePadding="10dp"
-				android:hint="@string/fullName"
-				android:maxLines="1"
-				android:inputType="textPersonName"
-				android:maxLength="50"/>
-		</club.itsociety.mmuone.MyTextInputLayout>
+				app:layout_constraintTop_toTopOf="parent"
+				android:layout_marginTop="110dp"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintLeft_toLeftOf="parent"
+				android:layout_marginStart="16dp"
+				android:layout_marginEnd="16dp"
+				android:textColorHint="@color/textColor">
 
-		<club.itsociety.mmuone.MyTextInputLayout
-			android:id="@+id/input_layout_email"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			app:layout_constraintTop_toBottomOf="@+id/input_layout_fullName"
-			android:layout_marginTop="16dp"
-			app:layout_constraintRight_toRightOf="parent"
-			app:layout_constraintLeft_toLeftOf="parent"
-			android:layout_marginStart="16dp"
-			android:layout_marginEnd="16dp"
-			android:textColorHint="@color/textColor">
+				<android.support.design.widget.TextInputEditText
+					android:id="@+id/input_fullName"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:drawableStart="@mipmap/icons8_user_100"
+					android:drawablePadding="10dp"
+					android:hint="@string/fullName"
+					android:maxLines="1"
+					android:inputType="textPersonName"
+					android:maxLength="50"/>
+			</club.itsociety.mmuone.MyTextInputLayout>
 
-			<android.support.design.widget.TextInputEditText
-				android:id="@+id/input_email"
-				android:layout_width="match_parent"
+			<club.itsociety.mmuone.MyTextInputLayout
+				android:id="@+id/input_layout_email"
+				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:drawableStart="@mipmap/icons8_message"
-				android:drawablePadding="10dp"
-				android:hint="@string/personalEmail"
-				android:maxLines="1"
-				android:inputType="textEmailAddress"
-				android:maxLength="50"/>
-		</club.itsociety.mmuone.MyTextInputLayout>
+				app:layout_constraintTop_toBottomOf="@+id/input_layout_fullName"
+				android:layout_marginTop="16dp"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintLeft_toLeftOf="parent"
+				android:layout_marginStart="16dp"
+				android:layout_marginEnd="16dp"
+				android:textColorHint="@color/textColor">
 
-		<club.itsociety.mmuone.MyTextInputLayout
-			android:id="@+id/input_layout_studentID"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			app:layout_constraintTop_toBottomOf="@+id/input_layout_email"
-			android:layout_marginTop="16dp"
-			app:layout_constraintRight_toRightOf="parent"
-			app:layout_constraintLeft_toLeftOf="parent"
-			android:layout_marginStart="16dp"
-			android:layout_marginEnd="16dp"
-			android:textColorHint="@color/textColor">
+				<android.support.design.widget.TextInputEditText
+					android:id="@+id/input_email"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:drawableStart="@mipmap/icons8_message"
+					android:drawablePadding="10dp"
+					android:hint="@string/personalEmail"
+					android:maxLines="1"
+					android:inputType="textEmailAddress"
+					android:maxLength="50"/>
+			</club.itsociety.mmuone.MyTextInputLayout>
 
-			<android.support.design.widget.TextInputEditText
-				android:id="@+id/input_studentID"
-				android:layout_width="match_parent"
+			<club.itsociety.mmuone.MyTextInputLayout
+				android:id="@+id/input_layout_studentID"
+				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:drawableStart="@mipmap/icons8_id_card"
-				android:drawablePadding="10dp"
-				android:hint="@string/studentID"
-				android:maxLines="1"
-				android:inputType="numberSigned"
-				android:maxLength="15"/>
-		</club.itsociety.mmuone.MyTextInputLayout>
+				app:layout_constraintTop_toBottomOf="@+id/input_layout_email"
+				android:layout_marginTop="16dp"
+				app:layout_constraintRight_toRightOf="parent"
+				app:layout_constraintLeft_toLeftOf="parent"
+				android:layout_marginStart="16dp"
+				android:layout_marginEnd="16dp"
+				android:textColorHint="@color/textColor">
 
-		<club.itsociety.mmuone.MyTextInputLayout
-			android:id="@+id/input_layout_password"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_marginRight="16dp"
-			app:layout_constraintRight_toRightOf="parent"
-			android:layout_marginLeft="16dp"
-			app:layout_constraintLeft_toLeftOf="parent"
-			android:layout_marginTop="16dp"
-			app:layout_constraintTop_toBottomOf="@+id/input_layout_studentID"
-			android:layout_marginStart="16dp"
-			android:layout_marginEnd="16dp"
-			app:passwordToggleContentDescription="@string/passwordShowHide"
-			app:passwordToggleEnabled="false"
-			app:passwordToggleTint="@color/textColor"
-			android:textColorHint="@color/textColor">
+				<android.support.design.widget.TextInputEditText
+					android:id="@+id/input_studentID"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:drawableStart="@mipmap/icons8_id_card"
+					android:drawablePadding="10dp"
+					android:hint="@string/studentID"
+					android:maxLines="1"
+					android:inputType="numberSigned"
+					android:maxLength="15"/>
+			</club.itsociety.mmuone.MyTextInputLayout>
 
-			<android.support.design.widget.TextInputEditText
-				android:id="@+id/input_password"
-				android:layout_width="match_parent"
+			<club.itsociety.mmuone.MyTextInputLayout
+				android:id="@+id/input_layout_password"
+				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:drawableStart="@mipmap/icons8_password_100"
-				android:drawablePadding="10dp"
-				android:hint="@string/password"
-				android:inputType="textPassword"
-				android:maxLength="25"/>
-		</club.itsociety.mmuone.MyTextInputLayout>
+				android:layout_marginRight="16dp"
+				app:layout_constraintRight_toRightOf="parent"
+				android:layout_marginLeft="16dp"
+				app:layout_constraintLeft_toLeftOf="parent"
+				android:layout_marginTop="16dp"
+				app:layout_constraintTop_toBottomOf="@+id/input_layout_studentID"
+				android:layout_marginStart="16dp"
+				android:layout_marginEnd="16dp"
+				app:passwordToggleContentDescription="@string/passwordShowHide"
+				app:passwordToggleEnabled="false"
+				app:passwordToggleTint="@color/textColor"
+				android:textColorHint="@color/textColor">
 
-		<Button
-			android:id="@+id/btn_register"
-			android:layout_width="308dp"
-			android:layout_height="wrap_content"
-			android:background="@drawable/buttons"
-			android:text="@string/register"
-			android:textColor="@color/textColor"
-			android:layout_marginLeft="16dp"
-			app:layout_constraintLeft_toLeftOf="parent"
-			android:layout_marginRight="16dp"
-			app:layout_constraintRight_toRightOf="parent"
-			android:layout_marginEnd="16dp"
-			app:layout_constraintHorizontal_bias="0.48"
-			android:layout_marginTop="34dp"
-			app:layout_constraintTop_toBottomOf="@+id/input_layout_password"
-			android:layout_marginStart="16dp"/>
+				<android.support.design.widget.TextInputEditText
+					android:id="@+id/input_password"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:drawableStart="@mipmap/icons8_password_100"
+					android:drawablePadding="10dp"
+					android:hint="@string/password"
+					android:inputType="textPassword"
+					android:maxLength="25"/>
+			</club.itsociety.mmuone.MyTextInputLayout>
 
-		<ImageView
-			android:id="@+id/logInIcon"
-			android:layout_width="16dp"
-			android:layout_height="16dp"
-			android:contentDescription="@string/signUptoLogInIcon"
-			android:src="@mipmap/icons8_signup1"
-			app:layout_constraintRight_toLeftOf="@+id/logInText"
-			app:layout_constraintTop_toBottomOf="@+id/btn_register"
-			android:layout_marginEnd="6dp"
-			android:layout_marginTop="24dp"/>
+			<Button
+				android:id="@+id/btn_register"
+				android:layout_width="308dp"
+				android:layout_height="wrap_content"
+				android:background="@drawable/buttons"
+				android:text="@string/register"
+				android:textColor="@color/textColor"
+				android:layout_marginLeft="16dp"
+				app:layout_constraintLeft_toLeftOf="parent"
+				android:layout_marginRight="16dp"
+				app:layout_constraintRight_toRightOf="parent"
+				android:layout_marginEnd="16dp"
+				app:layout_constraintHorizontal_bias="0.48"
+				android:layout_marginTop="34dp"
+				app:layout_constraintTop_toBottomOf="@+id/input_layout_password"
+				android:layout_marginStart="16dp"/>
 
-		<TextView
-			android:id="@+id/logInText"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/signUptoLogIn"
-			android:textAlignment="center"
-			android:textColor="#2E2E2B"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintRight_toRightOf="parent"
-			android:layout_marginTop="24dp"
-			android:layout_marginLeft="16dp"
-			android:layout_marginRight="10dp"
-			android:layout_marginEnd="10dp"
-			android:layout_marginStart="16dp"
-			android:textSize="7pt"
-			android:textStyle="normal"
-			app:layout_constraintTop_toBottomOf="@+id/btn_register"/>
+			<ImageView
+				android:id="@+id/logInIcon"
+				android:layout_width="16dp"
+				android:layout_height="16dp"
+				android:contentDescription="@string/signUptoLogInIcon"
+				android:src="@mipmap/icons8_signup1"
+				app:layout_constraintRight_toLeftOf="@+id/logInText"
+				app:layout_constraintTop_toBottomOf="@+id/btn_register"
+				android:layout_marginEnd="6dp"
+				android:layout_marginTop="24dp"/>
 
-		<TextView
-			android:id="@+id/textViewVolley"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:visibility="gone"/>
+			<TextView
+				android:id="@+id/logInText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/signUptoLogIn"
+				android:textAlignment="center"
+				android:textColor="#2E2E2B"
+				app:layout_constraintLeft_toLeftOf="parent"
+				app:layout_constraintRight_toRightOf="parent"
+				android:layout_marginTop="24dp"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginEnd="10dp"
+				android:layout_marginStart="16dp"
+				android:textSize="7pt"
+				android:textStyle="normal"
+				app:layout_constraintTop_toBottomOf="@+id/btn_register"/>
 
-	</android.support.constraint.ConstraintLayout>
+			<TextView
+				android:id="@+id/textViewVolley"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:visibility="gone"/>
 
-</ScrollView>
+		</android.support.constraint.ConstraintLayout>
+
+	</ScrollView>
+
+	<ProgressBar
+		android:id="@+id/progressBar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:visibility="invisible"
+		android:indeterminate="true"
+		android:indeterminateBehavior="cycle"
+		android:indeterminateOnly="true"
+		style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
+		android:layout_marginTop="0dp"
+		android:layout_marginStart="1dp"
+		android:layout_marginEnd="1dp"
+		android:scaleY="2"
+		android:indeterminateTint="@color/colorPrimaryLight"/>
+
+</RelativeLayout>
