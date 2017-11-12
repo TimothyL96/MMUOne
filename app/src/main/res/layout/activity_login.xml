@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- ScrollView needed as keyboard popup might squeeze the screen to need scrolling -->
-<ScrollView
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/scrollview"
+	android:id="@+id/relativeLayout"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
 	android:fillViewport="true"
 	tools:context="club.itsociety.mmuone.LogInActivity">
+
+	<ScrollView
+		android:id="@+id/scrollview"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:fillViewport="true">
 
 	<!-- ConstraintLayout newer than Relative Layout and easy to position -->
 	<android.support.constraint.ConstraintLayout
@@ -97,7 +103,7 @@
 			android:layout_marginStart="16dp"
 			android:textSize="6pt"
 			android:textStyle="normal"
-			android:gravity="right"
+			android:gravity="end"
 			app:layout_constraintTop_toBottomOf="@+id/input_layout_password"/>
 
 		<!-- Log In Button -->
@@ -148,6 +154,29 @@
 			android:gravity="center_vertical"
 			app:layout_constraintTop_toBottomOf="@+id/btn_login"/>
 
+		<TextView
+			android:id="@+id/textViewVolley"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:visibility="gone"/>
+
 	</android.support.constraint.ConstraintLayout>
 
-</ScrollView>
+	</ScrollView>
+
+	<ProgressBar
+		android:id="@+id/progressBar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:visibility="invisible"
+		android:indeterminate="true"
+		android:indeterminateBehavior="cycle"
+		android:indeterminateOnly="true"
+		style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
+		android:layout_marginTop="0dp"
+		android:layout_marginStart="1dp"
+		android:layout_marginEnd="1dp"
+		android:scaleY="2"
+		android:indeterminateTint="@color/colorPrimaryLight"/>
+
+</RelativeLayout>
