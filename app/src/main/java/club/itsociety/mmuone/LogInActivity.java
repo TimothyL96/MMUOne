@@ -27,6 +27,8 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.CookieHandler;
+import java.net.CookiePolicy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +63,8 @@ public class LogInActivity extends AppCompatActivity
 			ActionBar actionBar = getActionBar();
 			actionBar.hide();
 		*/
+
+		CookieHandler.setDefault(new java.net.CookieManager( null, CookiePolicy.ACCEPT_ALL ) );
 
 		//	Create events listener
 		View.OnFocusChangeListener noInputFocusListener = new noInputFocusChangeListener();
@@ -341,7 +345,7 @@ public class LogInActivity extends AppCompatActivity
 					params.put("password_mmuone", editTextPassword.getText().toString().trim());
 
 					volleyActivity.setParams(params);
-					volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext());
+					volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 1);
 				}
 			}
 		}

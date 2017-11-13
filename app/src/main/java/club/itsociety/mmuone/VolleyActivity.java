@@ -106,10 +106,15 @@ public class VolleyActivity
 	}
 
 	//	Volley request for JSON Object
-	public void volleyJsonObjectRequest(String url, final Context context)
+	public void volleyJsonObjectRequest(String url, final Context context, int requestMethod)
 	{
+		//	requestMethod:
+		//	1 = POST
+		//	0 = GET
+		//	requestTag to cancel request
 		final String requestTag = "volleyJsonObjectRequest";
-		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params),
+
+		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(requestMethod, url, new JSONObject(params),
 				new Response.Listener<JSONObject>()
 				{
 					@Override

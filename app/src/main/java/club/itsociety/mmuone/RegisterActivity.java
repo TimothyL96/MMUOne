@@ -193,7 +193,7 @@ public class RegisterActivity extends AppCompatActivity
 					params.put("password_mmuone", editTextPassword.getText().toString().trim());
 
 					volleyActivity.setParams(params);
-					volleyActivity.volleyJsonObjectRequest(RegisterActivity.this.registerURL, view.getContext());
+					volleyActivity.volleyJsonObjectRequest(RegisterActivity.this.registerURL, view.getContext(), 1);
 				}
 			}
 		}
