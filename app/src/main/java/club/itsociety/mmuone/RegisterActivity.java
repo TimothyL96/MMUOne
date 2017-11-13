@@ -337,7 +337,9 @@ public class RegisterActivity extends AppCompatActivity
 			{
 				try
 				{
+					//	Put reply response into class variable 'reply'
 					RegisterActivity.this.reply = new JSONObject(charSequence.toString());
+
 					final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RegisterActivity.this);
 					alertDialogBuilder.setTitle("JSON REPLY");
 					LinearLayout linearLayout = new LinearLayout(RegisterActivity.this);
@@ -357,6 +359,8 @@ public class RegisterActivity extends AppCompatActivity
 
 						}
 					});
+
+					//	Hide Progress bar
 					progressBar.setVisibility(View.GONE);
 					alertDialogBuilder.show();
 				}

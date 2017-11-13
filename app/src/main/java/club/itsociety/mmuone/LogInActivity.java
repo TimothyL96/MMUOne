@@ -1,14 +1,19 @@
 package club.itsociety.mmuone;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.LoginFilter;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,14 +21,23 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.view.Gravity.CENTER;
+
 public class LogInActivity extends AppCompatActivity
 {
 	String loginURL = "https://mmuone.com/api/users/loginUser.php";
+	JSONObject reply;
+	ProgressBar progressBar;
 
 	//	@Override prevents or disables method overloading
 	//	If the parameters in new method is entered wrongly from the parent method
@@ -53,6 +67,7 @@ public class LogInActivity extends AppCompatActivity
 		View.OnFocusChangeListener noInputFocusListener = new noInputFocusChangeListener();
 		View.OnClickListener logInClickListener = new logInClickListener();
 		View.OnTouchListener logInTouchListener = new logInTouchListener();
+		TextWatcher textWatcher = new onTextWatchChanged();
 
 		//	Create widgets objects
 		ConstraintLayout cl = findViewById(R.id.constraintLayout);
@@ -310,6 +325,12 @@ public class LogInActivity extends AppCompatActivity
 				if (editTextStudentID.getError() == null && editTextPassword.getError() == null && textInputLayoutStudentID.getError() == null & textInputLayoutPassword.getError() == null)
 				{
 					//	TODO when input data verified
+					//	Display progress bar
+					progressBar = findViewById(R.id.progressBar);
+					progressBar.setVisibility(View.VISIBLE);
+					progressBar.animate();
+
+					// New object for VolleyActivity class
 					VolleyActivity volleyActivity = new VolleyActivity();
 
 					Map<String, String> params = new HashMap<>();
@@ -393,6 +414,63 @@ public class LogInActivity extends AppCompatActivity
 			}
 
 			return false;
+		}
+	}
+
+	private class onTextWatchChanged implements TextWatcher
+	{
+		@Override
+		public void onTextChanged(CharSequence charSequence, int start, int before, int count)
+		{
+			if (!charSequence.toString().isEmpty())
+			{
+				try
+				{
+					//	Put reply response into class variable 'reply'
+					LogInActivity.this.reply = new JSONObject(charSequence.toString());
+
+					//	Show dialog
+					final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LogInActivity.this);
+					alertDialogBuilder.setTitle("JSON REPLY");
+					LinearLayout linearLayout = new LinearLayout(LogInActivity.this);
+					TextView textView = new TextView(LogInActivity.this);
+					textView.setText(reply.getString("status"));
+					linearLayout.addView(textView);
+					TextView textView1 = new TextView(LogInActivity.this);
+					textView1.setText(reply.getString("message"));
+					linearLayout.addView(textView1);
+					alertDialogBuilder.setView(linearLayout);
+					textView.setGravity(CENTER);
+					alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i)
+						{
+
+						}
+					});
+
+					//	Hide Progress bar
+					progressBar.setVisibility(View.GONE);
+					alertDialogBuilder.show();
+				}
+				catch (JSONException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence charSequence, int start, int count, int after)
+		{
+
+		}
+
+		@Override
+		public void afterTextChanged(Editable editable)
+		{
+
 		}
 	}
 }
