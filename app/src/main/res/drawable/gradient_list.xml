@@ -5,11 +5,11 @@
 		android:duration="1600"/>
 	<item
 		android:drawable="@drawable/gradient_2"
-		android:duration="1800"/>
+		android:duration="1700"/>
 	<item
 		android:drawable="@drawable/gradient_3"
-		android:duration="1800"/>
+		android:duration="1700"/>
 	<item
 		android:drawable="@drawable/gradient_4"
-		android:duration="1800"/>
+		android:duration="1700"/>
 </animation-list>

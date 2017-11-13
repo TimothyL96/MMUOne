@@ -66,7 +66,7 @@ public class VolleyActivity
 					public void onResponse(String response)
 					{
 						Log.d(requestTag, response);
-						LayoutInflater li = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+						/*LayoutInflater li = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 						View showDialogView = li.inflate(R.layout.activity_register, null);
 						TextView textView = showDialogView.findViewById(R.id.textViewVolley);
 						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -79,7 +79,7 @@ public class VolleyActivity
 								.setCancelable(false)
 								.create();
 						textView.setText(response);
-						alertDialogBuilder.show();
+						alertDialogBuilder.show();*/
 					}
 				},
 				new Response.ErrorListener()
@@ -154,23 +154,7 @@ public class VolleyActivity
 						public void onResponse(JSONArray response)
 						{
 							Log.d(requestTag, response.toString());
-							LayoutInflater li = ((Activity)context).getLayoutInflater();
-							View showDialogView = li.inflate(R.layout.activity_register, null);
-							TextView textView = showDialogView.findViewById(R.id.textViewVolley);
-							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-							alertDialogBuilder.setView(showDialogView);
-
-							alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener()
-							{
-								@Override
-								public void onClick(DialogInterface dialogInterface, int i)
-								{
-
-								}
-							}).setCancelable(false).create();
-
-							textView.setText(response.toString());
-							alertDialogBuilder.show();
+							//	setup here
 						}
 					},
 					new Response.ErrorListener()

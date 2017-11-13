@@ -16,6 +16,8 @@ import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -108,7 +110,7 @@ public class LogInActivity extends AppCompatActivity
 		//	Exit Fade Time: 1200
 		AnimationDrawable animationDrawable = (AnimationDrawable) cl.getBackground();
 		animationDrawable.setEnterFadeDuration(500);
-		animationDrawable.setExitFadeDuration(1200);
+		animationDrawable.setExitFadeDuration(1000);
 		animationDrawable.start();
 	}
 
@@ -436,30 +438,108 @@ public class LogInActivity extends AppCompatActivity
 					//	Put reply response into class variable 'reply'
 					LogInActivity.this.reply = new JSONObject(charSequence.toString());
 
-					//	Show dialog
-					final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LogInActivity.this);
-					alertDialogBuilder.setTitle("JSON REPLY");
-					LinearLayout linearLayout = new LinearLayout(LogInActivity.this);
-					TextView textView = new TextView(LogInActivity.this);
-					textView.setText(reply.getString("status"));
-					linearLayout.addView(textView);
-					TextView textView1 = new TextView(LogInActivity.this);
-					textView1.setText(reply.getString("message"));
-					linearLayout.addView(textView1);
-					alertDialogBuilder.setView(linearLayout);
-					textView.setGravity(CENTER);
-					alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+					//	Check status
+					if (reply.getString("status").contains("succeed"))
 					{
-						@Override
-						public void onClick(DialogInterface dialogInterface, int i)
+						//If login succeeded
+
+						//	Hide Progress bar
+						progressBar.setVisibility(View.GONE);
+
+						//	Get Text Input Layout widgets
+						final TextInputLayout textInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
+						final TextInputLayout textInputLayoutPassword = findViewById(R.id.input_layout_password);
+						final Button buttonLogIn = findViewById(R.id.btn_login);
+						final TextView textViewSignUp = findViewById(R.id.signUpText);
+						final TextView textViewForgotPassword = findViewById(R.id.forgotPassword);
+						final ImageView imageViewSignUp = findViewById(R.id.signUpIcon);
+
+						//	Set XML animations to variables
+						Animation slide_down = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
+						Animation slide_up = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+						Animation slide_up_fast = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up_fast);
+
+						//	Set Text Input Layout visibility when animations end
+						slide_down.setAnimationListener(new Animation.AnimationListener()
 						{
+							@Override
+							public void onAnimationStart(Animation animation)
+							{
 
-						}
-					});
+							}
 
-					//	Hide Progress bar
-					progressBar.setVisibility(View.GONE);
-					alertDialogBuilder.show();
+							@Override
+							public void onAnimationEnd(Animation animation)
+							{
+								textInputLayoutStudentID.setVisibility(View.GONE);
+								textInputLayoutPassword.setVisibility(View.GONE);
+							}
+
+							@Override
+							public void onAnimationRepeat(Animation animation)
+							{
+
+							}
+						});
+
+						slide_up.setAnimationListener(new Animation.AnimationListener()
+						{
+							@Override
+							public void onAnimationStart(Animation animation)
+							{
+
+							}
+
+							@Override
+							public void onAnimationEnd(Animation animation)
+							{
+								buttonLogIn.setVisibility(View.GONE);
+								textViewSignUp.setVisibility(View.GONE);
+								imageViewSignUp.setVisibility(View.GONE);
+							}
+
+							@Override
+							public void onAnimationRepeat(Animation animation)
+							{
+
+							}
+						});
+
+						slide_up_fast.setAnimationListener(new Animation.AnimationListener()
+						{
+							@Override
+							public void onAnimationStart(Animation animation)
+							{
+
+							}
+
+							@Override
+							public void onAnimationEnd(Animation animation)
+							{
+								textViewForgotPassword.setVisibility(View.GONE);
+							}
+
+							@Override
+							public void onAnimationRepeat(Animation animation)
+							{
+
+							}
+						});
+
+						//	Start the animations
+						textInputLayoutStudentID.startAnimation(slide_down);
+						textInputLayoutPassword.startAnimation(slide_down);
+
+						textViewForgotPassword.startAnimation(slide_up_fast);
+
+						buttonLogIn.startAnimation(slide_up);
+						textViewSignUp.startAnimation(slide_up);
+						imageViewSignUp.startAnimation(slide_up);
+					}
+					else if (reply.getString("status").contains("failed"))
+					{
+						//	If login failed
+					}
 				}
 				catch (JSONException e)
 				{

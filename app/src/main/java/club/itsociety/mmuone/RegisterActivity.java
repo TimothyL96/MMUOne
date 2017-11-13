@@ -88,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity
 		//	Exit Fade Time: 1200
 		AnimationDrawable animationDrawable = (AnimationDrawable) cl.getBackground();
 		animationDrawable.setEnterFadeDuration(500);
-		animationDrawable.setExitFadeDuration(1200);
+		animationDrawable.setExitFadeDuration(1000);
 		animationDrawable.start();
 	}
 

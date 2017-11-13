@@ -18,7 +18,7 @@ public class VolleySingleton
 	private static VolleySingleton volleySingletonInstance;
 	private RequestQueue requestQueue;
 	private ImageLoader imageLoader;
-	private static Context context;
+	private Context context;
 
 	//	We have created an instance of type VolleySingleton and
 	//	made the constructor private to apply singleton pattern
