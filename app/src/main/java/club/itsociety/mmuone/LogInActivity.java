@@ -77,6 +77,7 @@ public class LogInActivity extends AppCompatActivity
 		ImageView signUpIcon = findViewById(R.id.signUpIcon);
 		EditText editTextStudentID = findViewById(R.id.input_studentID);
 		EditText editTextPassword = findViewById(R.id.input_password);
+		TextView textViewVolley = findViewById(R.id.textViewVolley);
 
 		//	Set the widget object to event listener
 		//	OnFocusChangeListener
@@ -95,6 +96,9 @@ public class LogInActivity extends AppCompatActivity
 		signUpText.setOnTouchListener(logInTouchListener);
 		signUpIcon.setOnTouchListener(logInTouchListener);
 		forgotPasswordText.setOnTouchListener(logInTouchListener);
+
+		//	OnTextChange
+		textViewVolley.addTextChangedListener(textWatcher);
 
 		//	Gradient Background Animation
 		//	Enter Fade Time: 500
