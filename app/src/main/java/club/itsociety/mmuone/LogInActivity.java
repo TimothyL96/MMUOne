@@ -12,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.LoginFilter;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
