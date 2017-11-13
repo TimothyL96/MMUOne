@@ -4,10 +4,10 @@
 	<translate
 		android:fromYDelta="0"
 		android:toYDelta="-100%p"
-		android:duration="2000"/>
+		android:duration="1500"/>
 
 	<alpha
-		android:duration="1500"
+		android:duration="500"
 		android:fromAlpha="1"
 		android:toAlpha="0"/>
 

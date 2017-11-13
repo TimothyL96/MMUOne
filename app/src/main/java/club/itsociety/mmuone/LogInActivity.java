@@ -1,14 +1,18 @@
 package club.itsociety.mmuone;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Animatable2;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,7 +26,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,8 +36,6 @@ import java.net.CookieHandler;
 import java.net.CookiePolicy;
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.view.Gravity.CENTER;
 
 public class LogInActivity extends AppCompatActivity
 {
@@ -232,6 +233,10 @@ public class LogInActivity extends AppCompatActivity
 			EditText editTextStudentID = findViewById(R.id.input_studentID);
 			EditText editTextPassword = findViewById(R.id.input_password);
 			ConstraintLayout cl = findViewById(R.id.constraintLayout);
+			Button button = findViewById(R.id.btn_login);
+			TextView textViewForgotPassword = findViewById(R.id.forgotPassword);
+			TextView textViewSignUpText = findViewById(R.id.signUpText);
+			ImageView imageViewSignUpIcon = findViewById(R.id.signUpIcon);
 
 			//	If clicked widget is the sign up texts or sign up icon at the bottom of page
 			if (view.getId() == R.id.signUpText || view.getId() == R.id.signUpIcon)
@@ -334,6 +339,19 @@ public class LogInActivity extends AppCompatActivity
 				if (editTextStudentID.getError() == null && editTextPassword.getError() == null && textInputLayoutStudentID.getError() == null & textInputLayoutPassword.getError() == null)
 				{
 					//	TODO when input data verified
+					//	Disable the widgets
+					editTextStudentID.setEnabled(false);
+					editTextPassword.setEnabled(false);
+					textViewForgotPassword.setEnabled(false);
+					button.setEnabled(false);
+					textViewSignUpText.setEnabled(false);
+					imageViewSignUpIcon.setEnabled(false);
+
+					//	Get the data into a Hash Map
+					Map<String, String> params = new HashMap<>();
+					params.put("student_id", editTextStudentID.getText().toString().trim());
+					params.put("password_mmuone", editTextPassword.getText().toString().trim());
+
 					//	Display progress bar
 					progressBar = findViewById(R.id.progressBar);
 					progressBar.setVisibility(View.VISIBLE);
@@ -342,9 +360,6 @@ public class LogInActivity extends AppCompatActivity
 					// New object for VolleyActivity class
 					VolleyActivity volleyActivity = new VolleyActivity();
 
-					Map<String, String> params = new HashMap<>();
-					params.put("student_id", editTextStudentID.getText().toString().trim());
-					params.put("password_mmuone", editTextPassword.getText().toString().trim());
 
 					volleyActivity.setParams(params);
 					volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 1);
@@ -389,9 +404,10 @@ public class LogInActivity extends AppCompatActivity
 				}
 
 				//	For event that is action up and is inside the widget, we want to perform click
-				if (event.getAction() == MotionEvent.ACTION_UP && rect.contains(view.getLeft() + (int) event.getX(), view.getTop() + (int) event.getY()))
+				if (event.getAction() == MotionEvent.ACTION_UP)
 				{
-					view.performClick();
+					//	Set font weight to normal
+					signUpText.setTypeface(null, Typeface.NORMAL);
 				}
 			}
 
@@ -416,9 +432,10 @@ public class LogInActivity extends AppCompatActivity
 				}
 
 				//	For event that is action up and is inside the widget, we want to perform click
-				if (event.getAction() == MotionEvent.ACTION_UP && rect.contains(view.getLeft() + (int) event.getX(), view.getTop() + (int) event.getY()))
+				if (event.getAction() == MotionEvent.ACTION_UP)
 				{
-						view.performClick();
+					//	Set font weight to normal
+					forgotPasswordText.setTypeface(null, Typeface.NORMAL);
 				}
 			}
 
@@ -459,7 +476,40 @@ public class LogInActivity extends AppCompatActivity
 						Animation slide_up = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
 						Animation slide_up_fast = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up_fast);
 
+						final Animation fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+
+						//	Set drawable from XML
+						final Drawable drawableLockToTick = ContextCompat.getDrawable(LogInActivity.this, R.drawable.lock_to_tick);
+
+						//	Set the Constraint Layout
+						final ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
+
+						//	Create an ImageView for the animation
+						final ImageView imageViewTick = new ImageView(LogInActivity.this);
+
 						//	Set Text Input Layout visibility when animations end
+						slide_up_fast.setAnimationListener(new Animation.AnimationListener()
+						{
+							@Override
+							public void onAnimationStart(Animation animation)
+							{
+
+							}
+
+							@Override
+							public void onAnimationEnd(Animation animation)
+							{
+								//	Remove visibility
+								textViewForgotPassword.setVisibility(View.GONE);
+							}
+
+							@Override
+							public void onAnimationRepeat(Animation animation)
+							{
+
+							}
+						});
+
 						slide_down.setAnimationListener(new Animation.AnimationListener()
 						{
 							@Override
@@ -484,15 +534,41 @@ public class LogInActivity extends AppCompatActivity
 
 						slide_up.setAnimationListener(new Animation.AnimationListener()
 						{
+
 							@Override
 							public void onAnimationStart(Animation animation)
 							{
+								//	Show Signed In animation:
+								//	Set a unique ID for setting up constraint layout later
+								imageViewTick.setId(View.generateViewId());
 
+								//	Set scale type to fit center
+								imageViewTick.setScaleType(ImageView.ScaleType.CENTER);
+
+								//	Set drawable to widget
+								imageViewTick.setImageDrawable(drawableLockToTick);
+
+								//	Add Constraint to the ImageView with ConstraintSet
+								ConstraintSet constraintSet = new ConstraintSet();
+								constraintSet.connect(imageViewTick.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+								constraintSet.connect(imageViewTick.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
+								constraintSet.connect(imageViewTick.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+								constraintSet.connect(imageViewTick.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+
+								//	Set the constraint set to the current constraint layout
+								constraintLayout.setConstraintSet(constraintSet);
+
+								//	Add the ImageView to the Constraint Layout
+								constraintLayout.addView(imageViewTick);
+
+								//	Set fade in animation
+								imageViewTick.setAnimation(fade_in);
 							}
 
 							@Override
 							public void onAnimationEnd(Animation animation)
 							{
+								//	Hide visibility
 								buttonLogIn.setVisibility(View.GONE);
 								textViewSignUp.setVisibility(View.GONE);
 								imageViewSignUp.setVisibility(View.GONE);
@@ -505,7 +581,8 @@ public class LogInActivity extends AppCompatActivity
 							}
 						});
 
-						slide_up_fast.setAnimationListener(new Animation.AnimationListener()
+						//	We want to run the lock to tick vector animation when fade in completes
+						fade_in.setAnimationListener(new Animation.AnimationListener()
 						{
 							@Override
 							public void onAnimationStart(Animation animation)
@@ -516,7 +593,22 @@ public class LogInActivity extends AppCompatActivity
 							@Override
 							public void onAnimationEnd(Animation animation)
 							{
-								textViewForgotPassword.setVisibility(View.GONE);
+								//	Set Signed In animation duration + display it on screen time
+								//	Animation time: 1000
+								//	Display on screen time: 1000
+								int animationWaitTime = 2000;
+
+								//	Start the Signed In animation
+								((Animatable) drawableLockToTick).start();
+
+								constraintLayout.postDelayed(new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										finish();
+									}
+								}, animationWaitTime);
 							}
 
 							@Override
@@ -539,6 +631,24 @@ public class LogInActivity extends AppCompatActivity
 					else if (reply.getString("status").contains("failed"))
 					{
 						//	If login failed
+						//	Error Code:
+						//	10611	-	NO ACCOUNT FOUND
+						//	10612	-	PASSWORD ERROR
+						//	10613	-	FATAL ERROR: NON UNIQUE ID WHILE SIGNING IN
+						//	10614	-	FATAL ERROR: COUNT IS NEGATIVE WHILE SIGNING IN
+
+						switch (reply.getInt("code"))
+						{
+							case 10611:
+								break;
+							case 10612:
+								break;
+							case 10613:
+								break;
+							case 10614:
+								break;
+							default:
+						}
 					}
 				}
 				catch (JSONException e)

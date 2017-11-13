@@ -232,10 +232,10 @@ public class RegisterActivity extends AppCompatActivity
 				}
 
 				//	If the touch event is up and inside widget region, perform a click
-				if (event.getAction() == MotionEvent.ACTION_UP && rect.contains(view.getLeft() + (int) event.getX(), view.getTop() + (int) event.getY()))
+				if (event.getAction() == MotionEvent.ACTION_UP)
 				{
-					//	Perform a click
-					logInText.performClick();
+					//	Set font weight to normal
+					logInText.setTypeface(null, Typeface.NORMAL);
 				}
 			}
 
