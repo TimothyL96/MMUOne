@@ -336,7 +336,6 @@ public class LogInActivity extends AppCompatActivity
 				//	If all data verified, log the user in
 				if (editTextStudentID.getError() == null && editTextPassword.getError() == null && textInputLayoutStudentID.getError() == null & textInputLayoutPassword.getError() == null)
 				{
-					//	TODO when input data verified
 					//	Disable the widgets
 					editTextStudentID.setEnabled(false);
 					editTextPassword.setEnabled(false);
@@ -448,6 +447,16 @@ public class LogInActivity extends AppCompatActivity
 		{
 			if (!charSequence.toString().isEmpty())
 			{
+				//	Get Text Input Layout widgets
+				final TextInputLayout textInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
+				final TextInputLayout textInputLayoutPassword = findViewById(R.id.input_layout_password);
+				final Button buttonLogIn = findViewById(R.id.btn_login);
+				final TextView textViewSignUp = findViewById(R.id.signUpText);
+				final TextView textViewForgotPassword = findViewById(R.id.forgotPassword);
+				final ImageView imageViewSignUp = findViewById(R.id.signUpIcon);
+				final EditText editTextStudentID = findViewById(R.id.input_studentID);
+				final EditText editTextPassword = findViewById(R.id.input_password);
+
 				try
 				{
 					//	Put reply response into class variable 'reply'
@@ -460,14 +469,6 @@ public class LogInActivity extends AppCompatActivity
 
 						//	Hide Progress bar
 						progressBar.setVisibility(View.GONE);
-
-						//	Get Text Input Layout widgets
-						final TextInputLayout textInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
-						final TextInputLayout textInputLayoutPassword = findViewById(R.id.input_layout_password);
-						final Button buttonLogIn = findViewById(R.id.btn_login);
-						final TextView textViewSignUp = findViewById(R.id.signUpText);
-						final TextView textViewForgotPassword = findViewById(R.id.forgotPassword);
-						final ImageView imageViewSignUp = findViewById(R.id.signUpIcon);
 
 						//	Set XML animations to variables
 						Animation slide_down = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
@@ -635,18 +636,39 @@ public class LogInActivity extends AppCompatActivity
 						//	10613	-	FATAL ERROR: NON UNIQUE ID WHILE SIGNING IN
 						//	10614	-	FATAL ERROR: COUNT IS NEGATIVE WHILE SIGNING IN
 
+						//	Hide Progress bar
+						progressBar.setVisibility(View.GONE);
+
 						switch (reply.getInt("code"))
 						{
 							case 10611:
+								textInputLayoutStudentID.setError("Please check your student ID");
+								editTextStudentID.requestFocus();
 								break;
 							case 10612:
+								textInputLayoutPassword.setError("Please check your password");
+								editTextPassword.requestFocus();
 								break;
 							case 10613:
+								textInputLayoutStudentID.setError("FATAL ERROR: NON UNIQUE ID");
+								editTextStudentID.requestFocus();
 								break;
 							case 10614:
+								textInputLayoutStudentID.setError("FATAL ERROR: COUNT IS NEGATIVE");
+								editTextStudentID.requestFocus();
 								break;
 							default:
 						}
+						//	TODO timeout on brute force login
+						//	TODO Set IP and phone model
+
+						//	Enable the widgets
+						editTextStudentID.setEnabled(true);
+						editTextPassword.setEnabled(true);
+						textViewForgotPassword.setEnabled(true);
+						buttonLogIn.setEnabled(true);
+						textViewSignUp.setEnabled(true);
+						imageViewSignUp.setEnabled(true);
 					}
 				}
 				catch (JSONException e)
