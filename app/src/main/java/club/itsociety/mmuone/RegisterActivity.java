@@ -17,6 +17,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -384,6 +386,9 @@ public class RegisterActivity extends AppCompatActivity
 						logInText.setVisibility(View.GONE);
 						logInIcon.setVisibility(View.GONE);
 
+						//	Setup animation
+						final Animation animationFadeInFast = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_fast);
+
 						//	Set drawable XML and ImageView
 						final Drawable drawableTick = ContextCompat.getDrawable(RegisterActivity.this, R.drawable.register_to_tick);
 						final ImageView imageViewTick = new ImageView(RegisterActivity.this);
@@ -411,7 +416,44 @@ public class RegisterActivity extends AppCompatActivity
 						constraintLayout.addView(imageViewTick);
 
 						//	Start the animation
-						((Animatable) drawableTick).start();
+						imageViewTick.startAnimation(animationFadeInFast);
+
+						//	Animation Start, End, Repeat listener
+						animationFadeInFast.setAnimationListener(new Animation.AnimationListener()
+						{
+							@Override
+							public void onAnimationStart(Animation animation)
+							{
+
+							}
+
+							@Override
+							public void onAnimationEnd(Animation animation)
+							{
+								//	Animation time: 1000
+								//	Display on screen time: 1000
+								int animationWaitTime = 2000;
+
+								//	On Fade In animation ends, start the register to tick animation
+								((Animatable) drawableTick).start();
+
+								constraintLayout.postDelayed(new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										startActivity(new Intent(RegisterActivity.this, LogInActivity.class));
+										finish();
+									}
+								}, animationWaitTime);
+							}
+
+							@Override
+							public void onAnimationRepeat(Animation animation)
+							{
+
+							}
+						});
 					}
 					else if (reply.getString("status").contains("failed"))
 					{
