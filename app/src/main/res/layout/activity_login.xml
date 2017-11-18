@@ -96,14 +96,13 @@
 			android:text="@string/forgotPassword"
 			android:textColor="@color/textColor"
 			android:textAlignment="gravity"
-			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintRight_toRightOf="parent"
 			android:layout_marginTop="16dp"
 			android:layout_marginEnd="16dp"
 			android:layout_marginStart="16dp"
+			android:gravity="right"
 			android:textSize="6pt"
 			android:textStyle="normal"
-			android:gravity="end"
 			app:layout_constraintTop_toBottomOf="@+id/input_layout_password"/>
 
 		<!-- Log In Button -->
