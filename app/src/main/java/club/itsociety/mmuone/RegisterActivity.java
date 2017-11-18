@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
@@ -357,8 +358,9 @@ public class RegisterActivity extends AppCompatActivity
 				final EditText editTextFullName = findViewById(R.id.input_fullName);
 				final EditText editTextPassword = findViewById(R.id.input_password);
 				final Button button = findViewById(R.id.btn_register);
-				TextView logInText = findViewById(R.id.logInText);
-				ImageView logInIcon = findViewById(R.id.logInIcon);
+				final TextView logInText = findViewById(R.id.logInText);
+				final ImageView logInIcon = findViewById(R.id.logInIcon);
+				final ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
 
 				try
 				{
@@ -373,6 +375,7 @@ public class RegisterActivity extends AppCompatActivity
 					{
 						//	If registration succeeded
 
+						//	Remove widgets
 						myTextInputLayoutEmail.setVisibility(View.GONE);
 						myTextInputLayoutStudentID.setVisibility(View.GONE);
 						myTextInputLayoutFullName.setVisibility(View.GONE);
@@ -381,23 +384,34 @@ public class RegisterActivity extends AppCompatActivity
 						logInText.setVisibility(View.GONE);
 						logInIcon.setVisibility(View.GONE);
 
-						final ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
+						//	Set drawable XML and ImageView
 						final Drawable drawableTick = ContextCompat.getDrawable(RegisterActivity.this, R.drawable.register_to_tick);
 						final ImageView imageViewTick = new ImageView(RegisterActivity.this);
+
+						//	Generate unique ID for ImageView to set constraint later
 						imageViewTick.setId(View.generateViewId());
+
+						//	Set ImageView's image to be at center
 						imageViewTick.setScaleType(ImageView.ScaleType.CENTER);
+
+						//	Set the drawable above to this ImageView
 						imageViewTick.setImageDrawable(drawableTick);
 
-						ConstraintSet constraintSet =new ConstraintSet();
+						//	Set the constraint for the ImageView to our parent Constraint Layout
+						ConstraintSet constraintSet = new ConstraintSet();
 						constraintSet.connect(imageViewTick.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
 						constraintSet.connect(imageViewTick.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
 						constraintSet.connect(imageViewTick.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
 						constraintSet.connect(imageViewTick.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
 
+						//	Set the Constraint Set to the Constraint Layout
 						constraintLayout.setConstraintSet(constraintSet);
 
+						//	Add the ImageView to the Constraint Layout
 						constraintLayout.addView(imageViewTick);
 
+						//	Start the animation
+						((Animatable) drawableTick).start();
 					}
 					else if (reply.getString("status").contains("failed"))
 					{
