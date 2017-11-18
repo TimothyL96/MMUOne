@@ -134,13 +134,15 @@ public class RegisterActivity extends AppCompatActivity
 				cl.requestFocus();
 
 				//	Check for input data validation
-				//	Full name minimum length - 3
+				//	Full name minimum length - 5
 				//	E-mail minimum length - 8
+				//	Student ID minimum length - 10
+				//	Password minimum length - 6
 				if (editTextFullName.getText().toString().isEmpty())
 				{
 					MyTextInputLayoutFullName.setError("Please enter your full name");
 				}
-				else if (editTextFullName.getText().toString().trim().length() < 3)
+				else if (editTextFullName.getText().toString().trim().length() < 5)
 				{
 					MyTextInputLayoutFullName.setError("Please check your name");
 				}
@@ -180,7 +182,7 @@ public class RegisterActivity extends AppCompatActivity
 				}
 
 				//	If all input data verified, register the user
-				if (editTextFullName.getText().toString().trim().length() >= 3 && editTextEmail.getText().toString().trim().length() >= 10 && editTextStudentID.getText().toString().trim().length() >= 10 && editTextPassword.getText().toString().trim().length() >= 6 && validateEmail(editTextEmail.getText().toString().trim()))
+				if (editTextFullName.getText().toString().trim().length() >= 5 && editTextEmail.getText().toString().trim().length() >= 10 && editTextStudentID.getText().toString().trim().length() >= 10 && editTextPassword.getText().toString().trim().length() >= 6 && validateEmail(editTextEmail.getText().toString().trim()))
 				{
 					//	Register the user
 					//	Disable the widgets
@@ -446,6 +448,10 @@ public class RegisterActivity extends AppCompatActivity
 										finish();
 									}
 								}, animationWaitTime);
+
+								//	TODO - fix drawableTick bug, if register and tab out,
+								//	then come back again and register, the drawable
+								//	will start with a tick before changing to register icon
 							}
 
 							@Override
