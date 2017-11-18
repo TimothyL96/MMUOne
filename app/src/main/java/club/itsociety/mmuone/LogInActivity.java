@@ -337,10 +337,10 @@ public class LogInActivity extends AppCompatActivity
 				if (editTextStudentID.getError() == null && editTextPassword.getError() == null && textInputLayoutStudentID.getError() == null & textInputLayoutPassword.getError() == null)
 				{
 					//	Disable the widgets
+					button.setEnabled(false);
 					editTextStudentID.setEnabled(false);
 					editTextPassword.setEnabled(false);
 					textViewForgotPassword.setEnabled(false);
-					button.setEnabled(false);
 					textViewSignUpText.setEnabled(false);
 					imageViewSignUpIcon.setEnabled(false);
 

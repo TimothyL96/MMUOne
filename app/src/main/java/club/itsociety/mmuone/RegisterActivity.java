@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -108,6 +110,9 @@ public class RegisterActivity extends AppCompatActivity
 			EditText editTextStudentID = findViewById(R.id.input_studentID);
 			EditText editTextPassword = findViewById(R.id.input_password);
 			ConstraintLayout cl = findViewById(R.id.constraintLayout);
+			Button button = findViewById(R.id.btn_register);
+			ImageView logInIcon = findViewById(R.id.logInIcon);
+
 			//	If clicked widget is the login text or icon at the bottom of page
 			if (view.getId() == R.id.logInText || view.getId() == R.id.logInIcon)
 			{
@@ -177,6 +182,15 @@ public class RegisterActivity extends AppCompatActivity
 				if (editTextFullName.getText().toString().trim().length() >= 3 && editTextEmail.getText().toString().trim().length() >= 10 && editTextStudentID.getText().toString().trim().length() >= 10 && editTextPassword.getText().toString().trim().length() >= 6 && validateEmail(editTextEmail.getText().toString().trim()))
 				{
 					//	Register the user
+					//	Disable the widgets
+					button.setEnabled(false);
+					editTextFullName.setEnabled(false);
+					editTextEmail.setEnabled(false);
+					editTextStudentID.setEnabled(false);
+					editTextPassword.setEnabled(false);
+					logInText.setEnabled(false);
+					logInIcon.setEnabled(false);
+
 					//	Display progress bar
 					//progressBar = new ProgressBar(RegisterActivity.this);
 					progressBar = findViewById(R.id.progressBar);
@@ -335,6 +349,17 @@ public class RegisterActivity extends AppCompatActivity
 		{
 			if (!charSequence.toString().isEmpty())
 			{
+				//	Get widgets
+				final MyTextInputLayout myTextInputLayoutEmail = findViewById(R.id.input_layout_email);
+				final MyTextInputLayout myTextInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
+				final EditText editTextEmail = findViewById(R.id.input_email);
+				final EditText editTextStudentID = findViewById(R.id.input_studentID);
+				final EditText editTextFullName = findViewById(R.id.input_fullName);
+				final EditText editTextPassword = findViewById(R.id.input_password);
+				final Button button = findViewById(R.id.btn_register);
+				TextView logInText = findViewById(R.id.logInText);
+				ImageView logInIcon = findViewById(R.id.logInIcon);
+
 				try
 				{
 					//	Put reply response into class variable 'reply'
@@ -361,18 +386,32 @@ public class RegisterActivity extends AppCompatActivity
 						switch (reply.getInt("code"))
 						{
 							case 10621:
+								myTextInputLayoutEmail.setError("Email already exist. Have you registered?");
+								editTextEmail.requestFocus();
 								break;
 							case 10622:
+								myTextInputLayoutStudentID.setError("Student ID already exist. Have you registered?");
+								editTextStudentID.requestFocus();
 								break;
 							case 10623:
+								myTextInputLayoutEmail.setError("Email already exist. Have you registered?");
+								myTextInputLayoutStudentID.setError("Student ID already exist. Have you registered?");
 								break;
 							default:
+								myTextInputLayoutStudentID.setError("FATAL ERROR: UNKNOWN ERROR");
 						}
 
 						//	TODO timeout on brute force registration
 						//	TODO Set IP and phone model
 
 						//	Enable the widgets
+						button.setEnabled(true);
+						editTextFullName.setEnabled(true);
+						editTextEmail.setEnabled(true);
+						editTextStudentID.setEnabled(true);
+						editTextPassword.setEnabled(true);
+						logInText.setEnabled(true);
+						logInIcon.setEnabled(true);
 					}
 
 				}
