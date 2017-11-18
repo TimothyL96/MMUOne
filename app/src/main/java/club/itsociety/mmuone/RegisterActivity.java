@@ -2,14 +2,14 @@ package club.itsociety.mmuone;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
+import android.support.constraint.ConstraintSet;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,20 +20,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static android.view.Gravity.CENTER;
 
 public class RegisterActivity extends AppCompatActivity
 {
@@ -92,6 +88,8 @@ public class RegisterActivity extends AppCompatActivity
 		animationDrawable.setEnterFadeDuration(500);
 		animationDrawable.setExitFadeDuration(1000);
 		animationDrawable.start();
+
+		//	TODO add contact us support - if student ID taken cant register
 	}
 
 	//	Class for OnClickListener events
@@ -352,6 +350,8 @@ public class RegisterActivity extends AppCompatActivity
 				//	Get widgets
 				final MyTextInputLayout myTextInputLayoutEmail = findViewById(R.id.input_layout_email);
 				final MyTextInputLayout myTextInputLayoutStudentID = findViewById(R.id.input_layout_studentID);
+				final MyTextInputLayout myTextInputLayoutFullName = findViewById(R.id.input_layout_fullName);
+				final MyTextInputLayout myTextInputLayoutPassword = findViewById(R.id.input_layout_password);
 				final EditText editTextEmail = findViewById(R.id.input_email);
 				final EditText editTextStudentID = findViewById(R.id.input_studentID);
 				final EditText editTextFullName = findViewById(R.id.input_fullName);
@@ -373,6 +373,30 @@ public class RegisterActivity extends AppCompatActivity
 					{
 						//	If registration succeeded
 
+						myTextInputLayoutEmail.setVisibility(View.GONE);
+						myTextInputLayoutStudentID.setVisibility(View.GONE);
+						myTextInputLayoutFullName.setVisibility(View.GONE);
+						myTextInputLayoutPassword.setVisibility(View.GONE);
+						button.setVisibility(View.GONE);
+						logInText.setVisibility(View.GONE);
+						logInIcon.setVisibility(View.GONE);
+
+						final ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
+						final Drawable drawableTick = ContextCompat.getDrawable(RegisterActivity.this, R.drawable.register_to_tick);
+						final ImageView imageViewTick = new ImageView(RegisterActivity.this);
+						imageViewTick.setId(View.generateViewId());
+						imageViewTick.setScaleType(ImageView.ScaleType.CENTER);
+						imageViewTick.setImageDrawable(drawableTick);
+
+						ConstraintSet constraintSet =new ConstraintSet();
+						constraintSet.connect(imageViewTick.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+						constraintSet.connect(imageViewTick.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
+						constraintSet.connect(imageViewTick.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+						constraintSet.connect(imageViewTick.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+
+						constraintLayout.setConstraintSet(constraintSet);
+
+						constraintLayout.addView(imageViewTick);
 
 					}
 					else if (reply.getString("status").contains("failed"))
