@@ -462,13 +462,13 @@ public class LogInActivity extends AppCompatActivity
 					//	Put reply response into class variable 'reply'
 					LogInActivity.this.reply = new JSONObject(charSequence.toString());
 
+					//	Hide Progress bar
+					progressBar.setVisibility(View.GONE);
+
 					//	Check status
 					if (reply.getString("status").contains("succeed"))
 					{
 						//If login succeeded
-
-						//	Hide Progress bar
-						progressBar.setVisibility(View.GONE);
 
 						//	Set XML animations to variables
 						Animation slide_down = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
@@ -605,6 +605,7 @@ public class LogInActivity extends AppCompatActivity
 									@Override
 									public void run()
 									{
+										startActivity(new Intent(LogInActivity.this, MainActivity.class));
 										finish();
 									}
 								}, animationWaitTime);
@@ -636,17 +637,14 @@ public class LogInActivity extends AppCompatActivity
 						//	10613	-	FATAL ERROR: NON UNIQUE ID WHILE SIGNING IN
 						//	10614	-	FATAL ERROR: COUNT IS NEGATIVE WHILE SIGNING IN
 
-						//	Hide Progress bar
-						progressBar.setVisibility(View.GONE);
-
 						switch (reply.getInt("code"))
 						{
 							case 10611:
-								textInputLayoutStudentID.setError("Please check your student ID");
+								textInputLayoutStudentID.setError("No account exist for this student ID. Have you registered?");
 								editTextStudentID.requestFocus();
 								break;
 							case 10612:
-								textInputLayoutPassword.setError("Please check your password");
+								textInputLayoutPassword.setError("Password incorrect. Please check again.");
 								editTextPassword.requestFocus();
 								break;
 							case 10613:
@@ -658,6 +656,8 @@ public class LogInActivity extends AppCompatActivity
 								editTextStudentID.requestFocus();
 								break;
 							default:
+								textInputLayoutStudentID.setError("FATAL ERROR: UNKNOWN ERROR");
+								editTextStudentID.requestFocus();
 						}
 						//	TODO timeout on brute force login
 						//	TODO Set IP and phone model

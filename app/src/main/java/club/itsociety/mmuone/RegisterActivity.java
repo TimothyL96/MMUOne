@@ -340,29 +340,41 @@ public class RegisterActivity extends AppCompatActivity
 					//	Put reply response into class variable 'reply'
 					RegisterActivity.this.reply = new JSONObject(charSequence.toString());
 
-					final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RegisterActivity.this);
-					alertDialogBuilder.setTitle("JSON REPLY");
-					LinearLayout linearLayout = new LinearLayout(RegisterActivity.this);
-					TextView textView = new TextView(RegisterActivity.this);
-					textView.setText(reply.getString("status"));
-					linearLayout.addView(textView);
-					TextView textView1 = new TextView(RegisterActivity.this);
-					textView1.setText(reply.getString("message"));
-					linearLayout.addView(textView1);
-					alertDialogBuilder.setView(linearLayout);
-					textView.setGravity(CENTER);
-					alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialogInterface, int i)
-						{
-
-						}
-					});
-
 					//	Hide Progress bar
 					progressBar.setVisibility(View.GONE);
-					alertDialogBuilder.show();
+
+					//	Check status
+					if (reply.getString("status").contains("succeed"))
+					{
+						//	If registration succeeded
+
+
+					}
+					else if (reply.getString("status").contains("failed"))
+					{
+						//	If registration failed
+						//	Error Code:
+						//	10621	-	DUPLICATE ENTRY FOR EMAIL
+						//	10622	-	DUPLICATE ENTRY FOR STUDENT ID
+						//	10623	-	DUPLICATE ENTRY FOR EMAIL AND STUDENT ID
+
+						switch (reply.getInt("code"))
+						{
+							case 10621:
+								break;
+							case 10622:
+								break;
+							case 10623:
+								break;
+							default:
+						}
+
+						//	TODO timeout on brute force registration
+						//	TODO Set IP and phone model
+
+						//	Enable the widgets
+					}
+
 				}
 				catch (JSONException e)
 				{
