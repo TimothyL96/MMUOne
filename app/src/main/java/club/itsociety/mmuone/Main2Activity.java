@@ -26,7 +26,7 @@ public class Main2Activity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main2);
 
-		final Toolbar toolbar = findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		toolbar.setTitle("MMU One");
 		// Create the AccountHeader
 		AccountHeader headerResult = new AccountHeaderBuilder()
@@ -76,5 +76,7 @@ public class Main2Activity extends AppCompatActivity
 					}
 				})
 				.build();
+
+		result.closeDrawer();
 	}
 }
