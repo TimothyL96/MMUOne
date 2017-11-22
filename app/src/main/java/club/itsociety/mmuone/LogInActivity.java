@@ -605,7 +605,7 @@ public class LogInActivity extends AppCompatActivity
 									@Override
 									public void run()
 									{
-										startActivity(new Intent(LogInActivity.this, MainActivity.class));
+										startActivity(new Intent(LogInActivity.this, Main2Activity.class));
 										finish();
 									}
 								}, animationWaitTime);

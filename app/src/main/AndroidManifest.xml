@@ -29,6 +29,8 @@
 			android:label="@string/title_activity_main"
 			android:theme="@style/AppTheme">
 		</activity>
+		<activity android:name=".Main2Activity">
+		</activity>
 	</application>
 
 </manifest><!--
