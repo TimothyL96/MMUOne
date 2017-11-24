@@ -1,71 +1,67 @@
 package club.itsociety.mmuone;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Bundle;
+import android.view.View;
 
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class MainActivity extends AppCompatActivity
-		implements NavigationView.OnNavigationItemSelectedListener
 {
+	private Drawer result = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Toolbar toolbar = findViewById(R.id.toolbar);
+
+		android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+		getSupportActionBar().setTitle("MMU One");
 
-		FloatingActionButton fab = findViewById(R.id.fab);
-		fab.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
-			}
-		});
-
-		DrawerLayout drawer = findViewById(R.id.drawer_layout);
-		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-		drawer.addDrawerListener(toggle);
-		toggle.syncState();
-
-		NavigationView navigationView = findViewById(R.id.nav_view);
-		navigationView.setNavigationItemSelectedListener(this);
+		// Create the AccountHeader
+		AccountHeader headerResult = new AccountHeaderBuilder()
+				.withActivity(this)
+				.withHeaderBackground(R.drawable.header)
+				.addProfiles(
+						new ProfileDrawerItem().withName("Timothy Lam").withEmail("timothylam96@gmail.com").withIcon(ContextCompat.getDrawable(this, R.drawable.header))
+				)
+				.withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+					@Override
+					public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+						return false;
+					}
+				})
+				.build();
 
 		//if you want to update the items at a later time it is recommended to keep it in a variable
-		PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("home");
-		SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("setting");
+		PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
+		PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName("MMU Portal");
 
-//create the drawer and remember the `Drawer` result object
-		Drawer result = new DrawerBuilder()
-				.withActivity(this)
+		//create the drawer and remember the `Drawer` result object
+		this.result = new DrawerBuilder(this)
+				.withRootView(R.id.drawer_container)
 				.withToolbar(toolbar)
+				.withDisplayBelowStatusBar(true)
+				.withActionBarDrawerToggleAnimated(true)
+				.withAccountHeader(headerResult)
 				.addDrawerItems(
 						item1,
 						new DividerDrawerItem(),
 						item2,
-						new SecondaryDrawerItem().withName("setting")
+						new SecondaryDrawerItem().withName("Setting")
 				)
 				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 					@Override
@@ -74,76 +70,31 @@ public class MainActivity extends AppCompatActivity
 						return false;
 					}
 				})
+				.withSavedInstance(savedInstanceState)
 				.build();
+
+		result.closeDrawer();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		//	add the values which need to be saved from the drawer to the bundle
+		outState = this.result.saveInstanceState(outState);
+		super.onSaveInstanceState(outState);
 	}
 
 	@Override
 	public void onBackPressed()
 	{
-		DrawerLayout drawer = findViewById(R.id.drawer_layout);
-		if (drawer.isDrawerOpen(GravityCompat.START))
+		//	Handle the back press :D close the drawer first and if the drawer is closed close the activity
+		if (this.result != null && this.result.isDrawerOpen())
 		{
-			drawer.closeDrawer(GravityCompat.START);
-		} else
+			result.closeDrawer();
+		}
+		else
 		{
 			super.onBackPressed();
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings)
-		{
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
-	@SuppressWarnings("StatementWithEmptyBody")
-	@Override
-	public boolean onNavigationItemSelected(MenuItem item)
-	{
-		// Handle navigation view item clicks here.
-		int id = item.getItemId();
-
-		if (id == R.id.nav_camera)
-		{
-			// Handle the camera action
-		} else if (id == R.id.nav_gallery)
-		{
-
-		} else if (id == R.id.nav_slideshow)
-		{
-
-		} else if (id == R.id.nav_manage)
-		{
-
-		} else if (id == R.id.nav_share)
-		{
-
-		} else if (id == R.id.nav_send)
-		{
-
-		}
-
-		DrawerLayout drawer = findViewById(R.id.drawer_layout);
-		drawer.closeDrawer(GravityCompat.START);
-		return true;
 	}
 }

@@ -14,22 +14,17 @@
 		<activity
 			android:name=".LogInActivity"
 			android:windowSoftInputMode="adjustPan">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
-
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
 		</activity>
 		<activity android:name=".RegisterActivity">
 		</activity>
 		<activity android:name=".ForgotPassword">
 		</activity>
-		<activity
-			android:name=".MainActivity"
-			android:label="@string/title_activity_main"
-			android:theme="@style/AppTheme">
-		</activity>
-		<activity android:name=".Main2Activity">
+		<activity android:name=".MainActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
 		</activity>
 	</application>
 
