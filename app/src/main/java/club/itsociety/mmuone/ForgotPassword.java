@@ -120,6 +120,7 @@ public class ForgotPassword extends AppCompatActivity
 				{
 					if (!editTextFullName.getText().toString().isEmpty() && editTextFullName.getText().toString().trim().length() >= 3)
 					{
+						//	Remove error
 						textInputLayoutFullName.setError(null);
 					}
 				}
@@ -132,6 +133,7 @@ public class ForgotPassword extends AppCompatActivity
 				{
 					if (!editTextStudentID.getText().toString().isEmpty() && editTextStudentID.getText().toString().trim().length() >= 10)
 					{
+						//	Remove error
 						textInputLayoutStudentID.setError(null);
 					}
 				}

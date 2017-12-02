@@ -82,6 +82,7 @@ public class RegisterActivity extends AppCompatActivity
 		editTextStudentID.setOnFocusChangeListener(noInputFocusListener);
 		editTextPassword.setOnFocusChangeListener(noInputFocusListener);
 
+		//	On text changed listener
 		textViewVolley.addTextChangedListener(textWatcher);
 
 		//	Gradient Background Animation
@@ -92,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity
 		animationDrawable.setExitFadeDuration(1000);
 		animationDrawable.start();
 
-		//	TODO add contact us support - if student ID taken cant register
+		//	TODO add contact us support - if student ID taken making them couldn't register
 	}
 
 	//	Class for OnClickListener events
@@ -101,6 +102,7 @@ public class RegisterActivity extends AppCompatActivity
 		@Override
 		public void onClick(View view)
 		{
+			//	Get all the widgets
 			TextView logInText = findViewById(R.id.logInText);
 			MyTextInputLayout MyTextInputLayoutFullName = findViewById(R.id.input_layout_fullName);
 			MyTextInputLayout MyTextInputLayoutEmail = findViewById(R.id.input_layout_email);
@@ -138,6 +140,8 @@ public class RegisterActivity extends AppCompatActivity
 				//	E-mail minimum length - 8
 				//	Student ID minimum length - 10
 				//	Password minimum length - 6
+
+				//	Check for errors and set them
 				if (editTextFullName.getText().toString().isEmpty())
 				{
 					MyTextInputLayoutFullName.setError("Please enter your full name");
@@ -439,6 +443,7 @@ public class RegisterActivity extends AppCompatActivity
 								//	On Fade In animation ends, start the register to tick animation
 								((Animatable) drawableTick).start();
 
+								//	When animation wait time ends, execute the run method
 								constraintLayout.postDelayed(new Runnable()
 								{
 									@Override
@@ -449,6 +454,7 @@ public class RegisterActivity extends AppCompatActivity
 									}
 								}, animationWaitTime);
 
+								//	TODO - prevent ddos of registration, timeout or re-captcha
 								//	TODO - fix drawableTick bug, if register and tab out,
 								//	then come back again and register, the drawable
 								//	will start with a tick before changing to register icon
@@ -469,6 +475,7 @@ public class RegisterActivity extends AppCompatActivity
 						//	10622	-	DUPLICATE ENTRY FOR STUDENT ID
 						//	10623	-	DUPLICATE ENTRY FOR EMAIL AND STUDENT ID
 
+						//	Get error from error code
 						switch (reply.getInt("code"))
 						{
 							case 10621:
@@ -525,6 +532,7 @@ public class RegisterActivity extends AppCompatActivity
 	private boolean validateEmail(CharSequence inputStr)
 	{
 		//	^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-+]+)*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$
+		//	Regex for email
 		String expression = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})?";
 
 		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);

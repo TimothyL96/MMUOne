@@ -11,8 +11,10 @@ import android.view.View;
  * Class to override TextInputLayout to fix its bug
  * When error set and then hidden, the space will not be hidden
  * as the used View.INVISIBLE instead of View.GONE
+ * Remember to use this in XML file as well
  */
 
+//	Extending TextInputLayout
 public class MyTextInputLayout extends TextInputLayout
 {
 	public MyTextInputLayout(Context context) {
@@ -27,6 +29,7 @@ public class MyTextInputLayout extends TextInputLayout
 		super(context, attrs, defStyleAttr);
 	}
 
+	//	Overriding the method with bug
 	@Override
 	public void setError(@Nullable CharSequence error) {
 		super.setError(error);

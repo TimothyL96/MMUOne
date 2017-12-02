@@ -1,6 +1,5 @@
 package club.itsociety.mmuone;
 
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,15 +26,21 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		//	Get the toolbar from the XML file
 		android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+
+		//	Set the action bar
 		setSupportActionBar(toolbar);
+
+		//	Get the toolbar and set the title
 		getSupportActionBar().setTitle("MMU One");
 
-		// Create the AccountHeader
+		//	Create the AccountHeader
 		AccountHeader headerResult = new AccountHeaderBuilder()
 				.withActivity(this)
 				.withHeaderBackground(R.drawable.header)
 				.addProfiles(
+						//	Profile details
 						new ProfileDrawerItem().withName("Timothy Lam").withEmail("timothylam96@gmail.com").withIcon(ContextCompat.getDrawable(this, R.drawable.header))
 				)
 				.withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
@@ -46,11 +51,12 @@ public class MainActivity extends AppCompatActivity
 				})
 				.build();
 
-		//if you want to update the items at a later time it is recommended to keep it in a variable
+		//	Items to be displayed at the drawer
+		//	If you want to update the items at a later time it is recommended to keep it in a variable
 		PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
 		PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName("MMU Portal");
 
-		//create the drawer and remember the `Drawer` result object
+		//	Create the drawer and remember the `Drawer` result object
 		this.result = new DrawerBuilder(this)
 				.withRootView(R.id.drawer_container)
 				.withToolbar(toolbar)
@@ -63,27 +69,50 @@ public class MainActivity extends AppCompatActivity
 						item2,
 						new SecondaryDrawerItem().withName("Setting")
 				)
-				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener()
+				{
+					//	When the drawer buttons are clicked
 					@Override
-					public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-						// do something with the clicked item :D
+					public boolean onItemClick(View view, int position, IDrawerItem drawerItem)
+					{
+						//	Do something with the clicked item :D
+						//	Use a switch to control it
+						//	Position integer is the identifier set previously at above with items
+						//	For each cases it should be calling other activity with intend
+						//	But don't use finish() after starting the activity
+						//	So when the user presses back button, it will come back to this screen
+						switch (position)
+						{
+							case 1:
+								break;
+							case 2:
+								break;
+							default:
+						}
 						return false;
 					}
 				})
 				.withSavedInstance(savedInstanceState)
 				.build();
 
+		//	Just to use the drawer once to remove warning
 		result.closeDrawer();
+
+		//	TODO: This is the main window. Have a social place for students to post
+		//	TODO: From this page they can navigate to other places using the drawer
 	}
 
+	//	Overriding onSaveInstanceState
 	@Override
 	protected void onSaveInstanceState(Bundle outState)
 	{
-		//	add the values which need to be saved from the drawer to the bundle
+		//	Add the values which need to be saved from the drawer to the bundle
 		outState = this.result.saveInstanceState(outState);
 		super.onSaveInstanceState(outState);
 	}
 
+	//	Overriding pressing back button method
+	//	If the drawer is not close, close it or else perform a normal back button action
 	@Override
 	public void onBackPressed()
 	{

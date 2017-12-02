@@ -31,6 +31,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 /**
  * Created by Timothy on 07/11/2017.
+ * Use volley library with these self created functions available across all activities
  */
 
 public class VolleyActivity

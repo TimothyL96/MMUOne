@@ -11,6 +11,8 @@ import com.android.volley.toolbox.Volley;
 
 /**
  * Created by Timothy on 05/11/2017.
+ * Singleton class
+ * Singleton in java is something between a static and non static class
  */
 
 public class VolleySingleton

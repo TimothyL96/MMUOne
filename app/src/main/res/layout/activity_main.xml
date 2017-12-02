@@ -8,6 +8,7 @@
 	android:layout_height="match_parent"
 	tools:context="club.itsociety.mmuone.MainActivity">
 
+	<!-- The toolbar for our title-->
 	<android.support.v7.widget.Toolbar
 		android:id="@+id/toolbar"
 		android:layout_width="match_parent"
@@ -15,6 +16,13 @@
 
 	</android.support.v7.widget.Toolbar>
 
+	<!-- Wrap contents in nested frame layout so it would not stack up with the toolbar's area-->
+	<!-- TODO: The main screen, develop a social site at this activity -->
+	<!-- TODO: Other section like timetable or news should be at other activities -->
+	<!-- TODO: Welcome screen with login and register button -->
+	<!-- TODO: Intro screen for first time user that introduce the app and swipe right  -->
+	<!-- TODO: Splash screen with the app logo/icon but don't waste user's time  -->
+	<!-- TODO: Design the app's logo  -->
 	<FrameLayout
 		android:id="@+id/drawer_container"
 		android:layout_width="match_parent"

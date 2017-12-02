@@ -486,7 +486,7 @@ public class LogInActivity extends AppCompatActivity
 						//	Create an ImageView for the animation
 						final ImageView imageViewTick = new ImageView(LogInActivity.this);
 
-						//	Set Text Input Layout visibility when animations end
+						//	Set Text Input Layout visibility when slide up fast animations end
 						slide_up_fast.setAnimationListener(new Animation.AnimationListener()
 						{
 							@Override
@@ -495,6 +495,7 @@ public class LogInActivity extends AppCompatActivity
 
 							}
 
+							//	When animation ends
 							@Override
 							public void onAnimationEnd(Animation animation)
 							{
@@ -509,6 +510,7 @@ public class LogInActivity extends AppCompatActivity
 							}
 						});
 
+						//	Set slide down animation listener
 						slide_down.setAnimationListener(new Animation.AnimationListener()
 						{
 							@Override
@@ -520,6 +522,7 @@ public class LogInActivity extends AppCompatActivity
 							@Override
 							public void onAnimationEnd(Animation animation)
 							{
+								//	Remove the fields
 								textInputLayoutStudentID.setVisibility(View.GONE);
 								textInputLayoutPassword.setVisibility(View.GONE);
 							}
@@ -531,6 +534,7 @@ public class LogInActivity extends AppCompatActivity
 							}
 						});
 
+						//	Slide up animation listener
 						slide_up.setAnimationListener(new Animation.AnimationListener()
 						{
 
@@ -600,6 +604,7 @@ public class LogInActivity extends AppCompatActivity
 								//	Start the Signed In animation
 								((Animatable) drawableLockToTick).start();
 
+								//	When animation wait time passed then perform the run method
 								constraintLayout.postDelayed(new Runnable()
 								{
 									@Override
@@ -637,6 +642,7 @@ public class LogInActivity extends AppCompatActivity
 						//	10613	-	FATAL ERROR: NON UNIQUE ID WHILE SIGNING IN
 						//	10614	-	FATAL ERROR: COUNT IS NEGATIVE WHILE SIGNING IN
 
+						//	Set error according to the error code and focus on the widget
 						switch (reply.getInt("code"))
 						{
 							case 10611:
