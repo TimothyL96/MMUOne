@@ -23,6 +23,7 @@
 	<!-- TODO: Intro screen for first time user that introduce the app and swipe right  -->
 	<!-- TODO: Splash screen with the app logo/icon but don't waste user's time  -->
 	<!-- TODO: Design the app's logo  -->
+	<!-- TODO: Put all strings into strings.xml  -->
 	<FrameLayout
 		android:id="@+id/drawer_container"
 		android:layout_width="match_parent"

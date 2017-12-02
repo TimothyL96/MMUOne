@@ -10,6 +10,14 @@
 <br/>Thus, having a mobile application that can has 3 in 1 function including other functions like
 <br/>having a profile, social media groups, news et cetera is a marvelous choice.
 
+
+Developers:
+- Timothy C. Lam
+
+Credits and Licenses:
+- icons8 etc.... 
+- (remember to add the rest)
+
 ##### Support SDK Version 22 to 26
 ###### _There's a web API for this Android app made with PHP on a Virtual Private Server_
 ###### _It is available at another GitHub repository._
