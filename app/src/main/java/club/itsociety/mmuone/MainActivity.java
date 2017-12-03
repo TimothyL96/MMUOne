@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity
 
 		//	TODO: This is the main window. Have a social place for students to post
 		//	TODO: From this page they can navigate to other places using the drawer
+		//	TODO: Record login session after user successfully logged in
 	}
 
 	//	Overriding onSaveInstanceState
