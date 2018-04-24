@@ -37,7 +37,7 @@ import java.util.Map;
 
 public class LogInActivity extends AppCompatActivity
 {
-	String loginURL = "https://mmuone.com/api/users/loginUser.php";
+	String loginURL = "https://www.mmuone.com/api/users/loginUser.php";
 	JSONObject reply;
 	ProgressBar progressBar;
 
