@@ -491,7 +491,7 @@ public class RegisterActivity extends AppCompatActivity
 								myTextInputLayoutStudentID.setError("Student ID already exist. Have you registered?");
 								break;
 							default:
-								myTextInputLayoutStudentID.setError("FATAL ERROR: UNKNOWN ERROR");
+								myTextInputLayoutStudentID.setError("FATAL ERROR: NETWORK ERROR");
 						}
 
 						//	TODO timeout on brute force registration

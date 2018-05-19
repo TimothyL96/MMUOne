@@ -1,11 +1,26 @@
 package club.itsociety.mmuone;
 
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -17,9 +32,16 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity
 {
 	private Drawer result = null;
+	String cookie;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -65,10 +87,10 @@ public class MainActivity extends AppCompatActivity
 				.withActionBarDrawerToggleAnimated(true)
 				.withAccountHeader(headerResult)
 				.addDrawerItems(
-						item1,
-						new DividerDrawerItem(),
-						item2,
-						new SecondaryDrawerItem().withName("Setting")
+						item1, // case 1
+						new DividerDrawerItem(), // case 2
+						item2, // case 3
+						new SecondaryDrawerItem().withName("Setting") // case 4
 				)
 				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener()
 				{
@@ -82,16 +104,32 @@ public class MainActivity extends AppCompatActivity
 						//	For each cases it should be calling other activity with intend
 						//	But don't use finish() after starting the activity
 						//	So when the user presses back button, it will come back to this screen
+
+						VolleyActivity volleyActivity = new VolleyActivity();
+
 						switch (position)
 						{
-							case 1:
+							case 3:
+								//	Get the data into a Hash Map
+								Map<String, String> params = new HashMap<>();
+								//params.put("student_id", "1144400444");
 
+								// New object for VolleyActivity class for network request
+
+
+								//volleyActivity.setParams(params);
+								String loginURL = "https://www.mmuone.com/api/portal/login.php?student_id=1142700462";
+								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
-							case 2:
-								startActivity(new Intent(MainActivity.this, LogInActivity.class));
-								finish();
+							case 4:
+								//	Get full name
+								loginURL = "https://www.mmuone.com/api/portal/getFullName.php?student_id=1142700462&cookie=" + MainActivity.this.cookie;
+								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							default:
+								//Log.i("int position", Integer.toString(position));
+								//startActivity(new Intent(MainActivity.this, LogInActivity.class));
+
 						}
 						return false;
 					}
@@ -101,6 +139,11 @@ public class MainActivity extends AppCompatActivity
 
 		//	Just to use the drawer once to remove warning
 		result.closeDrawer();
+
+
+		TextWatcher textWatcher = new onTextWatchChanged();
+		TextView textViewVolley = findViewById(R.id.textViewVolley);
+		textViewVolley.addTextChangedListener(textWatcher);
 
 		//	TODO: This is the main window. Have a social place for students to post
 		//	TODO: From this page they can navigate to other places using the drawer
@@ -129,6 +172,74 @@ public class MainActivity extends AppCompatActivity
 		else
 		{
 			super.onBackPressed();
+		}
+	}
+
+	private class onTextWatchChanged implements TextWatcher
+	{
+		@Override
+		public void onTextChanged(CharSequence charSequence, int start, int before, int count)
+		{
+			if (!charSequence.toString().isEmpty())
+			{
+				//	Get Text Input Layout widgets
+				final TextView firstText = findViewById(R.id.firstText);
+				boolean messageArray = true;
+				try
+				{
+					//	Put reply response into class variable 'reply'
+					JSONObject reply = new JSONObject(charSequence.toString());
+
+					//	Check if message is json object array
+					if (reply.optJSONObject("message") != null)
+					{
+						JSONObject message = reply.getJSONObject("message");
+						MainActivity.this.cookie = message.getString("cookie");
+						messageArray = true;
+					}
+					else
+					{
+						messageArray = false;
+					}
+
+					//	Check status
+					if (reply.getString("status").contains("1"))
+					{
+						if (messageArray == true)
+						{
+							firstText.setText("login succeeded");
+						}
+						else
+						{
+							firstText.setText(reply.getString("message"));
+						}
+					}
+					else if (reply.getString("status").contains("0"))
+					{
+						firstText.setText("faillllled");
+					}
+					else
+					{
+						firstText.setText("unknown");
+					}
+				}
+				catch (JSONException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence charSequence, int start, int count, int after)
+		{
+
+		}
+
+		@Override
+		public void afterTextChanged(Editable editable)
+		{
+
 		}
 	}
 }

@@ -12,11 +12,12 @@
 	<android.support.v7.widget.Toolbar
 		android:id="@+id/toolbar"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-
+		android:layout_height="wrap_content"
+		android:elevation="4dp">
 	</android.support.v7.widget.Toolbar>
 
 	<!-- Wrap contents in nested frame layout so it would not stack up with the toolbar's area-->
+	<!-- TODO: Remove the gap between the toolbar and main body -->
 	<!-- TODO: The main screen, develop a social site at this activity -->
 	<!-- TODO: Other section like timetable or news should be at other activities -->
 	<!-- TODO: Welcome screen with login and register button -->
@@ -36,11 +37,18 @@
 			android:layout_height="match_parent">
 
 			<TextView
+				android:id="@+id/firstText"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="ZHello World!"
+				android:text="Hello World!"
 				android:layout_gravity="center"
 				android:textSize="16sp"/>
+
+			<TextView
+				android:id="@+id/textViewVolley"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:visibility="gone"/>
 
 		</FrameLayout>
 

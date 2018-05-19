@@ -354,7 +354,7 @@ public class LogInActivity extends AppCompatActivity
 					progressBar.setVisibility(View.VISIBLE);
 					progressBar.animate();
 
-					// New object for VolleyActivity class
+					// New object for VolleyActivity class for network request
 					VolleyActivity volleyActivity = new VolleyActivity();
 
 
@@ -466,7 +466,7 @@ public class LogInActivity extends AppCompatActivity
 					progressBar.setVisibility(View.GONE);
 
 					//	Check status
-					if (reply.getString("status").contains("succeed"))
+					if (reply.getString("status").contains("1"))
 					{
 						//If login succeeded
 
@@ -633,7 +633,7 @@ public class LogInActivity extends AppCompatActivity
 						textViewSignUp.startAnimation(slide_up);
 						imageViewSignUp.startAnimation(slide_up);
 					}
-					else if (reply.getString("status").contains("failed"))
+					else if (reply.getString("status").contains("0"))
 					{
 						//	If login failed
 						//	Error Code:
