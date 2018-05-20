@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity
 {
 	private Drawer result = null;
 	String cookie;
+	String token = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -90,7 +91,9 @@ public class MainActivity extends AppCompatActivity
 						item1, // case 1
 						new DividerDrawerItem(), // case 2
 						item2, // case 3
-						new SecondaryDrawerItem().withName("Setting") // case 4
+						new SecondaryDrawerItem().withName("Setting"), // case 4
+						new PrimaryDrawerItem().withName("Check Update"), // case 5
+						new PrimaryDrawerItem().withName("Get Update") // case 6
 				)
 				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener()
 				{
@@ -124,6 +127,16 @@ public class MainActivity extends AppCompatActivity
 							case 4:
 								//	Get full name
 								loginURL = "https://www.mmuone.com/api/portal/getFullName.php?student_id=1142700462&cookie=" + MainActivity.this.cookie;
+								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
+								break;
+							case 5:
+								//	Check update
+								loginURL = "https://www.mmuone.com/api/portal/checkUpdate.php?student_id=1142700462&tab=1";
+								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
+								break;
+							case 6:
+								//	Get update: GET: tab, student_id, cookie, token
+								loginURL = "https://www.mmuone.com/api/portal/getUpdate.php?tab=1&student_id=1142700462&force_update=1&cookie=" + MainActivity.this.cookie + "&token=" + MainActivity.this.token;
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							default:
@@ -194,8 +207,11 @@ public class MainActivity extends AppCompatActivity
 					if (reply.optJSONObject("message") != null)
 					{
 						JSONObject message = reply.getJSONObject("message");
-						MainActivity.this.cookie = message.getString("cookie");
-						messageArray = true;
+						if (message.optString("cookie") != null)
+						{
+							MainActivity.this.cookie = message.optString("cookie");
+							messageArray = true;
+						}
 					}
 					else
 					{
