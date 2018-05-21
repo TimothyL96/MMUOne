@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity
 {
 	private Drawer result = null;
 	String token = "";
+	String studentID = String.valueOf(UserData.studentID);
 
-	// TODO SQLite
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -122,22 +122,22 @@ public class MainActivity extends AppCompatActivity
 								// Reset token
 								MainActivity.this.token = Integer.toString(0);
 								//volleyActivity.setParams(params);
-								String loginURL = "https://www.mmuone.com/api/portal/login.php?student_id=1142700462";
+								String loginURL = "https://www.mmuone.com/api/portal/login.php?student_id=" + studentID;
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 4:
 								//	Get full name
-								loginURL = "https://www.mmuone.com/api/portal/getFullName.php?student_id=1142700462";
+								loginURL = "https://www.mmuone.com/api/portal/getFullName.php?student_id=" + studentID;
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 5:
 								//	Check update
-								loginURL = "https://www.mmuone.com/api/portal/checkUpdate.php?student_id=1142700462&tab=1";
+								loginURL = "https://www.mmuone.com/api/portal/checkUpdate.php?student_id=" + studentID + "&tab=1";
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 6:
 								//	Get update: GET: tab, student_id, cookie, token
-								loginURL = "https://www.mmuone.com/api/portal/getUpdate.php?tab=1&student_id=1142700462&force_update=1&token=" + MainActivity.this.token;
+								loginURL = "https://www.mmuone.com/api/portal/getUpdate.php?tab=1&student_id=" + studentID + "&force_update=1&token=" + MainActivity.this.token;
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							default:

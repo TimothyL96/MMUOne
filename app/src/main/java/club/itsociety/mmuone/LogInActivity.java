@@ -344,9 +344,12 @@ public class LogInActivity extends AppCompatActivity
 					textViewSignUpText.setEnabled(false);
 					imageViewSignUpIcon.setEnabled(false);
 
+					//	Get student ID into variable
+					String studentID = editTextStudentID.getText().toString().trim();
+
 					//	Get the data into a Hash Map
 					Map<String, String> params = new HashMap<>();
-					params.put("student_id", editTextStudentID.getText().toString().trim());
+					params.put("student_id", studentID);
 					params.put("password_mmuone", editTextPassword.getText().toString().trim());
 
 					//	Display progress bar
@@ -357,9 +360,11 @@ public class LogInActivity extends AppCompatActivity
 					// New object for VolleyActivity class for network request
 					VolleyActivity volleyActivity = new VolleyActivity();
 
-
 					volleyActivity.setParams(params);
 					volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 1);
+
+					//	Update StudentID in UserData
+					UserData.studentID = Integer.getInteger(studentID);
 				}
 			}
 		}
