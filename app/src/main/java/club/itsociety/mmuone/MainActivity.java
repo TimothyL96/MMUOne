@@ -41,9 +41,9 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity
 {
 	private Drawer result = null;
-	String cookie;
 	String token = "";
 
+	// TODO SQLite
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -119,14 +119,15 @@ public class MainActivity extends AppCompatActivity
 
 								// New object for VolleyActivity class for network request
 
-
+								// Reset token
+								MainActivity.this.token = Integer.toString(0);
 								//volleyActivity.setParams(params);
 								String loginURL = "https://www.mmuone.com/api/portal/login.php?student_id=1142700462";
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 4:
 								//	Get full name
-								loginURL = "https://www.mmuone.com/api/portal/getFullName.php?student_id=1142700462&cookie=" + MainActivity.this.cookie;
+								loginURL = "https://www.mmuone.com/api/portal/getFullName.php?student_id=1142700462";
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 5:
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity
 								break;
 							case 6:
 								//	Get update: GET: tab, student_id, cookie, token
-								loginURL = "https://www.mmuone.com/api/portal/getUpdate.php?tab=1&student_id=1142700462&force_update=1&cookie=" + MainActivity.this.cookie + "&token=" + MainActivity.this.token;
+								loginURL = "https://www.mmuone.com/api/portal/getUpdate.php?tab=1&student_id=1142700462&force_update=1&token=" + MainActivity.this.token;
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							default:
@@ -206,12 +207,8 @@ public class MainActivity extends AppCompatActivity
 					//	Check if message is json object array
 					if (reply.optJSONObject("message") != null)
 					{
-						JSONObject message = reply.getJSONObject("message");
-						if (message.optString("cookie") != null)
-						{
-							MainActivity.this.cookie = message.optString("cookie");
-							messageArray = true;
-						}
+						messageArray = true;
+
 					}
 					else
 					{
@@ -221,9 +218,20 @@ public class MainActivity extends AppCompatActivity
 					//	Check status
 					if (reply.getString("status").contains("1"))
 					{
-						if (messageArray == true)
+						if (messageArray)
 						{
-							firstText.setText("login succeeded");
+							JSONObject messageObject = reply.optJSONObject("message");
+							firstText.setText("login succeeded" + "token: " + (messageObject.optString("token")));
+
+							if (messageObject.optString("token") != null)
+							{
+								MainActivity.this.token = messageObject.optString("token");
+							}
+
+							if (messageObject.optInt("hasPage") == 0)
+							{
+								firstText.setText(firstText.getText() + "\nNo more pages!");
+							}
 						}
 						else
 						{
