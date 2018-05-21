@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -364,7 +365,7 @@ public class LogInActivity extends AppCompatActivity
 					volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 1);
 
 					//	Update StudentID in UserData
-					UserData.studentID = Integer.getInteger(studentID);
+					UserData.studentID = Integer.valueOf(studentID);
 				}
 			}
 		}
