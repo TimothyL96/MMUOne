@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity
 								break;
 							case 6:
 								//	Get update: GET: tab, student_id, cookie, token
-								loginURL = "https://www.mmuone.com/api/portal/getUpdate.php?tab=1&student_id=" + studentID + "&force_update=1&token=" + MainActivity.this.token;
+								loginURL = "https://www.mmuone.com/api/portal/getUpdate.php?tab=1&student_id=" + studentID + "&force_update=1&token=" + MainActivity.this.token + "&hash=";
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							default:
