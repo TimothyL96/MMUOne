@@ -93,7 +93,9 @@ public class MainActivity extends AppCompatActivity
 						item2, // case 3
 						new SecondaryDrawerItem().withName("Setting"), // case 4
 						new PrimaryDrawerItem().withName("Check Update"), // case 5
-						new PrimaryDrawerItem().withName("Get Update") // case 6
+						new PrimaryDrawerItem().withName("Get Update"), // case 6
+						new PrimaryDrawerItem().withName("Camsys Login"), // case 7
+						new PrimaryDrawerItem().withName("get account balance") // case 8
 				)
 				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener()
 				{
@@ -138,6 +140,14 @@ public class MainActivity extends AppCompatActivity
 							case 6:
 								//	Get update: GET: tab, student_id, cookie, token
 								loginURL = "https://www.mmuone.com/api/portal/getUpdate.php?tab=1&student_id=" + studentID + "&force_update=1&token=" + MainActivity.this.token + "&hash=";
+								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
+								break;
+							case 7:
+								loginURL = "https://www.mmuone.com/api/camsys/login.php?student_id=" + studentID;
+								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
+								break;
+							case 8:
+								loginURL = "https://www.mmuone.com/api/camsys/balance.php?student_id=" + studentID;
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							default:
