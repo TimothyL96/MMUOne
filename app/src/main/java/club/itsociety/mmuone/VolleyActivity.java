@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -135,13 +136,22 @@ public class VolleyActivity
 					public void onErrorResponse(VolleyError error)
 					{
 						VolleyLog.d(requestTag, "Error: " + error.getMessage());
-						Log.d(requestTag, url);
-						//Log.d(requestTag, error.getMessage());
 					}
-				});
+				})
+				{
+					//	Pass HTTP headers request
+					@Override
+					public Map<String, String> getHeaders() throws AuthFailureError
+					{
+						HashMap<String, String> headers = new HashMap<String, String>();
+						headers.put("Authorization", "Value123");
+						return headers;
+					}
+				};
 
 		//	For long request, timeout might occur before response return
 		jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
 		//	Adding Json Object request to request queue
 		VolleySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest, requestTag);
 	}

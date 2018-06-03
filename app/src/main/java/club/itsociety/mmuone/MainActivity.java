@@ -95,7 +95,8 @@ public class MainActivity extends AppCompatActivity
 						new PrimaryDrawerItem().withName("Check Update"), // case 5
 						new PrimaryDrawerItem().withName("Get Update"), // case 6
 						new PrimaryDrawerItem().withName("Camsys Login"), // case 7
-						new PrimaryDrawerItem().withName("get account balance") // case 8
+						new PrimaryDrawerItem().withName("get account balance"), // case 8
+						new PrimaryDrawerItem().withName("Show mac address") // case 9
 				)
 				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener()
 				{
@@ -149,6 +150,11 @@ public class MainActivity extends AppCompatActivity
 							case 8:
 								loginURL = "https://www.mmuone.com/api/camsys/balance.php?student_id=" + studentID;
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
+								break;
+							case 9:
+								TextView textView = findViewById(R.id.firstText);
+								UserData udo = new UserData();
+								textView.setText(UserData.macAddr);
 								break;
 							default:
 								//Log.i("int position", Integer.toString(position));
