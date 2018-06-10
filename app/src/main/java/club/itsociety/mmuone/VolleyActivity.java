@@ -40,10 +40,15 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 public class VolleyActivity
 {
 	private Map<String, String> params = new HashMap<>();
+	private HashMap<String, String> headers = new HashMap<>();
 
 	public void setParams(Map<String, String> params)
 	{
 		this.params = params;
+	}
+	public void setHeaders(HashMap<String, String> params)
+	{
+		this.headers = params;
 	}
 
 	//	Volley request for String Object
@@ -143,8 +148,7 @@ public class VolleyActivity
 					@Override
 					public Map<String, String> getHeaders() throws AuthFailureError
 					{
-						HashMap<String, String> headers = new HashMap<String, String>();
-						headers.put("Authorization", "Value123");
+						HashMap<String, String> header;
 						return headers;
 					}
 				};

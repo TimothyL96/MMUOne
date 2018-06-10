@@ -41,7 +41,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity
 {
 	private Drawer result = null;
-	String token = "";
+	String page = "";
 	String studentID = String.valueOf(UserData.studentID);
 
 	@Override
@@ -113,34 +113,38 @@ public class MainActivity extends AppCompatActivity
 
 						VolleyActivity volleyActivity = new VolleyActivity();
 
+						//	Get the data into a Hash Map
+						HashMap<String, String> params = new HashMap<>();
+						params.put("Authorization", UserData.token);
+						volleyActivity.setHeaders(params);
+
 						switch (position)
 						{
+
 							case 3:
 								//	Get the data into a Hash Map
-								Map<String, String> params = new HashMap<>();
-								//params.put("student_id", "1144400444");
+								//HashMap<String, String> params = new HashMap<>();
+								//params.put("Authorization", UserData.token);
 
-								// New object for VolleyActivity class for network request
+								// Reset page
+								MainActivity.this.page = Integer.toString(0);
 
-								// Reset token
-								MainActivity.this.token = Integer.toString(0);
-								//volleyActivity.setParams(params);
 								String loginURL = "https://www.mmuone.com/api/portal/login.php?student_id=" + studentID;
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 4:
 								//	Get full name
-								loginURL = "https://www.mmuone.com/api/portal/getFullName.php?student_id=" + studentID;
+								loginURL = "https://www.mmuone.com/api/portal/getFullName.php";
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 5:
 								//	Check update
-								loginURL = "https://www.mmuone.com/api/portal/checkUpdate.php?student_id=" + studentID + "&tab=1";
+								loginURL = "https://www.mmuone.com/api/portal/checkUpdate.php?&tab=1";
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 6:
-								//	Get update: GET: tab, student_id, cookie, token
-								loginURL = "https://www.mmuone.com/api/portal/getUpdate.php?tab=1&student_id=" + studentID + "&force_update=1&token=" + MainActivity.this.token + "&hash=";
+								//	Get update: GET: tab, student_id, cookie, page
+								loginURL = "https://www.mmuone.com/api/portal/getUpdate.php?tab=1&force_update=1&page=" + MainActivity.this.page + "&hash=";
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 7:
@@ -148,7 +152,7 @@ public class MainActivity extends AppCompatActivity
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 8:
-								loginURL = "https://www.mmuone.com/api/camsys/balance.php?student_id=" + studentID;
+								loginURL = "https://www.mmuone.com/api/camsys/balance.php";
 								volleyActivity.volleyJsonObjectRequest(loginURL, view.getContext(), 0);
 								break;
 							case 9:
@@ -231,17 +235,27 @@ public class MainActivity extends AppCompatActivity
 						messageArray = false;
 					}
 
+					if (reply.optJSONObject("message") != null)
+					{
+						JSONObject messageObject = reply.optJSONObject("message");
+
+						if (messageObject.optString("token") != null)
+						{
+							UserData.token = messageObject.optString("token");
+						}
+					}
+
 					//	Check status
 					if (reply.getString("status").contains("1"))
 					{
 						if (messageArray)
 						{
 							JSONObject messageObject = reply.optJSONObject("message");
-							firstText.setText("login succeeded" + "token: " + (messageObject.optString("token")));
+							firstText.setText("login succeeded" + " message: " + (messageObject.optString("message")));
 
-							if (messageObject.optString("token") != null)
+							if (messageObject.optString("page") != null)
 							{
-								MainActivity.this.token = messageObject.optString("token");
+								MainActivity.this.page = messageObject.optString("page");
 							}
 
 							if (messageObject.optInt("hasPage") == 0)

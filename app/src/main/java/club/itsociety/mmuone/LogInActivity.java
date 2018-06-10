@@ -348,10 +348,14 @@ public class LogInActivity extends AppCompatActivity
 					//	Get student ID into variable
 					String studentID = editTextStudentID.getText().toString().trim();
 
+					//	Get mac address
+					UserData userData = new UserData();
+
 					//	Get the data into a Hash Map
 					Map<String, String> params = new HashMap<>();
 					params.put("student_id", studentID);
 					params.put("password_mmuone", editTextPassword.getText().toString().trim());
+					params.put("macaddr", userData.macAddr);
 
 					//	Display progress bar
 					progressBar = findViewById(R.id.progressBar);
@@ -470,6 +474,16 @@ public class LogInActivity extends AppCompatActivity
 
 					//	Hide Progress bar
 					progressBar.setVisibility(View.GONE);
+
+					if (reply.optJSONObject("message") != null)
+					{
+						JSONObject messageObject = reply.optJSONObject("message");
+
+						if (messageObject.optString("token") != null)
+						{
+							UserData.token = messageObject.optString("token");
+						}
+					}
 
 					//	Check status
 					if (reply.getString("status").contains("1"))

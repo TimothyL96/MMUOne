@@ -9,6 +9,7 @@ public class UserData
 {
 	public static int studentID;
 	public static String macAddr;
+	public static String token;
 
 	UserData()
 	{
